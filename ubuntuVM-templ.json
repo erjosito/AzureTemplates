@@ -1,0 +1,174 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachineName": {
+            "defaultValue": "ubuntu-test-01",
+            "type": "String"
+        },
+         "vnetName": {
+            "defaultValue": "myOtherVnet",
+            "type": "String"
+        }, 
+		"location": {
+            "defaultValue": "westeurope",
+            "type": "String"
+        },
+    },
+    "variables": {
+        "nicName": "[concat(parameters('virtualMachineName'),'Nic')]",
+        "nsgName": "[concat(parameters('virtualMachineName'),'Nsg')]",
+		"diskName": "[concat(parameters('virtualMachineName'),'disk')]",
+	},
+    "resources": [
+	{
+		"apiVersion": "2015-01-01", 
+		"name": "vnet-Linked-Template", 
+		"type": "Microsoft.Resources/deployments", 
+		"properties": { 
+			"mode": "incremental", 
+			"templateLink": {
+				"uri": "vnet.json",
+				"contentVersion": "1.0.0.0"
+			}
+        }, 
+        "parameters": { 
+			"vnet_name": {
+				"value": "[parameters('vnetName')]"
+			} 
+		}
+	},
+  	{
+		"type": "Microsoft.Compute/virtualMachines",
+		"name": "[parameters('virtualMachineName')]",
+		"apiVersion": "2015-06-15",
+		"location": "[parameters('location')]",
+		"properties": {
+			"hardwareProfile": {
+				"vmSize": "Standard_A0"
+			},
+			"storageProfile": {
+				"imageReference": {
+					"publisher": "Canonical",
+					"offer": "UbuntuServer",
+					"sku": "16.04.0-LTS",
+					"version": "latest"
+				},
+				"osDisk": {
+					"name": "[parameters('virtualMachineName')]",
+					"createOption": "FromImage",
+					"vhd": {
+						"uri": "[concat('https', '://', variables('diskName'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachineName'),'2016102405046.vhd'))]"
+					},
+					"caching": "ReadWrite"
+				},
+				"dataDisks": []
+			},
+			"osProfile": {
+				"computerName": "[parameters('virtualMachineName')]",
+				"adminUsername": "jose",
+				"linuxConfiguration": {
+					"disablePasswordAuthentication": true,
+					"ssh": {
+						"publicKeys": [
+							{
+								"path": "/home/jose/.ssh/authorized_keys",
+								"keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDn4i0NkH4uFL7B87MJBW0TyQcsk99vQNlHyZLJyRielhU2kxy73K4ecOEcYQPu0B58KbQfHM2EooaHbZIDAaZK8K62yaYz5eV7YBMr5TdN9Tw5u1GGT5LrWsOYoHcQtcSnTRbBSWZDFIx5eJWebBxdDh61LbEftyOLg16xsLRIqp6SeAtJANTWNSMCEH96qn4+12eoW8bYQ7flVyR7uyE+7NDKmMaHk0zWUQe0wluHyUnfj15g1tfRvwXyUEMLMagyFrhRh0n/wNBnV8XrX74OjqCseJfh3YnuLxhy4hAmw0di699Q3jTB3xJ8b7yg2NvoAF+lzSkQtiArTjEBVKuv"
+							}
+						]
+					}
+				},
+				"secrets": [],
+				"adminPassword": "[parameters('adminPassword')]"
+			},
+			"networkProfile": {
+				"networkInterfaces": [
+					{
+						"id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+					}
+				]
+			}
+		},
+		"resources": [],
+		"dependsOn": [
+			"[resourceId('Microsoft.Storage/storageAccounts', variables('diskName'))]",
+			"[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+		]
+	},
+	{
+		"type": "Microsoft.Network/networkInterfaces",
+		"name": "[variables('nicName')]",
+		"apiVersion": "2016-03-30",
+		"location": "[parameters('location')]",
+		"properties": {
+			"ipConfigurations": [
+				{
+					"name": "ipconfig1",
+					"properties": {
+						"privateIPAddress": "10.0.0.6",
+						"privateIPAllocationMethod": "Dynamic",
+						"subnet": {
+							"id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/default')]"
+						}
+					}
+				}
+			],
+			"dnsSettings": {
+				"dnsServers": []
+			},
+			"enableIPForwarding": false,
+			"networkSecurityGroup": {
+				"id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+			}
+		},
+		"resources": [],
+		"dependsOn": [
+			"[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+		]
+	},
+	{
+		"type": "Microsoft.Network/networkSecurityGroups",
+		"name": "[variables('nsgName')]",
+		"apiVersion": "2016-03-30",
+		"location": "[parameters('location')]",
+		"properties": {
+			"securityRules": [
+				{
+					"name": "default-allow-ssh",
+					"properties": {
+						"protocol": "TCP",
+						"sourcePortRange": "*",
+						"destinationPortRange": "22",
+						"sourceAddressPrefix": "*",
+						"destinationAddressPrefix": "*",
+						"access": "Allow",
+						"priority": 1000,
+						"direction": "Inbound"
+					}
+				}
+			]
+		},
+		"resources": [],
+		"dependsOn": []
+	},
+	{
+		"type": "Microsoft.Storage/storageAccounts",
+		"sku": {
+			"name": "Standard_LRS",
+			"tier": "Standard"
+		},
+		"kind": "Storage",
+		"name": "[variables('diskName')]",
+		"apiVersion": "2016-01-01",
+		"location": "[parameters('location')]",
+		"tags": {},
+		"properties": {},
+		"resources": [],
+		"dependsOn": []
+	}
+    ]
+}
