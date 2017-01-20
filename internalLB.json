@@ -1,0 +1,119 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+		"vnetName": {
+            "defaultValue": "myVnet",
+            "type": "String"
+		},
+		"subnetName": {
+            "defaultValue": "serverSubnet",
+            "type": "String"
+		},
+        "ipPrefix": {
+            "defaultValue": "10.0.1",
+            "type": "String"
+        },
+        "vipSuffix": {
+            "defaultValue": "100",
+            "type": "String"
+        },
+	}
+    "variables": {
+		"vip": "[concat(parameters('ipPrefix'), parameters('vipSuffix'))]",
+		"frontendConfigName": "myFrontendConfig",
+		"backendConfigName": "myBackendConfig",
+		"probeName": "myProbe",
+		"natName": "myNAT",
+	}
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/slbtest/providers/Microsoft.Network/loadBalancers/mySlb'.",
+            "type": "Microsoft.Network/loadBalancers",
+            "name": "[parameters('loadBalancers_mySlb_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LB-Frontend",
+                        "properties": {
+                            "privateIPAddress": "[variables('vip')]",
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('subnetName'))]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "BackendConfig"
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "HTTPslb",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "name": "[variables('frontendConfigName')]"
+                            },
+                            "frontendPort": 8080,
+                            "backendPort": 80,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "Default",
+                            "backendAddressPool": {
+                                "name": "[variables('backendConfigName')]"
+                            },
+                            "probe": {
+                                "name": "[variables('probeName')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "HealthProbe",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": 22,
+                            "intervalInSeconds": 15,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "inboundNatRules": [
+                    {
+                        "name": "SSHnat",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "name": "[variables('frontendConfigName')]"
+                            },
+                            "frontendPort": 1022,
+                            "backendPort": 22,
+                            "protocol": "Tcp"
+                        }
+                    },
+                    {
+                        "name": "HTTPnat",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[variables('natName')]"
+                            },
+                            "frontendPort": 1080,
+                            "backendPort": 80,
+                            "protocol": "Tcp"
+                        }
+                    }
+                ],
+                "outboundNatRules": [],
+                "inboundNatPools": []
+            },
+            "resources": [],
+            "dependsOn": [
+            ]
+        },
+    ]
+}
