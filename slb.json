@@ -1,0 +1,229 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "defaultValue": "myVnet",
+            "type": "String"
+        },
+        "storageAccountName": {
+            "defaultValue": "[concat('storage',uniqueString(resourceGroup().id))]",
+            "type": "String"
+        },
+        "subnet1Name": {
+            "defaultValue": "serverSubnet",
+            "type": "String"
+        },
+        "location": {
+            "defaultValue": "westeurope",
+            "type": "String"
+		},
+        "vmCount": {
+            "defaultValue": 2,
+            "type": "int",
+        },
+        "adminPassword": {
+            "defaultValue": "Microsoft123!",
+            "type": "SecureString"
+        },
+        "vmPrefix": {
+            "defaultValue": "slb-test-",
+            "type": "String"
+        },
+
+		"availabilitySetName": {
+			"defaultValue": "myAvSet",
+			"type": "string"
+		}
+    },
+ 
+    "variables": {
+		"vnetSpace": "10.0.0.0/16",
+		"subnet1Space": "10.0.1.0/24",
+        "nicName": "[concat(parameters('vmPrefix'),'nic')]",
+        "nsgName": "[concat(parameters('vmPrefix'),'nsg')]",
+		"diskName": "[concat(parameters('vmPrefix'),'disk')]",
+		"apiVersion": "2016-03-30",
+	},
+
+    "resources": [
+        {
+			"comments": "Storage account for VM disks",
+			"type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccountName')]",
+            "apiVersion": "2016-01-01",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "vnet for the SLB lab",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('vnetName')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location":  "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('vnetSpace')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet1Space')]"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+		{
+			"comments": "SLB requires availability set",
+			"type": "Microsoft.Compute/availabilitySets",
+			"name": "[parameters('availabilitySetName')]",
+			"apiVersion": "[variables('apiVersion')]",
+			"location": "[resourceGroup().location]"
+		},
+		{
+			"comments": "NSGs not required, but here for extra security",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[concat(variables('nsgName'), copyIndex(1))]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "default-allow-ssh",
+                        "properties": {
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": [],
+			"copy": {
+				"name": "nsgCopy",
+				"count": "[parameters('vmCount')]"
+			}
+        },
+        {
+			"comments": "NICs created with dynamic IP addresses",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(variables('nicName'),copyIndex(1))]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat('ipconfig', copyIndex(1))]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('subnet1Name'))]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('nsgName'), copyIndex(1)))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "nsgCopy"
+            ],
+			"copy": {
+				"name": "nicCopy",
+				"count": "[parameters('vmCount')]"
+			}
+        },
+		{	
+			"comments": "VMs created and linked to NICs and storage account",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[concat(parameters('vmPrefix'), copyIndex(1))]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+				"availabilitySet": {
+					"id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
+				},
+				"hardwareProfile": {
+                    "vmSize": "Standard_A0"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04.0-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[concat(parameters('vmPrefix'), copyIndex(1))]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccountName'), '.blob.core.windows.net', concat('/vhds/', parameters('vmPrefix'), copyIndex(1)), uniqueString(resourceGroup().id),'.vhd')]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[concat(parameters('vmPrefix'),copyIndex(1))]",
+                    "adminUsername": "jose",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "/home/jose/.ssh/authorized_keys",
+                                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDn4i0NkH4uFL7B87MJBW0TyQcsk99vQNlHyZLJyRielhU2kxy73K4ecOEcYQPu0B58KbQfHM2EooaHbZIDAaZK8K62yaYz5eV7YBMr5TdN9Tw5u1GGT5LrWsOYoHcQtcSnTRbBSWZDFIx5eJWebBxdDh61LbEftyOLg16xsLRIqp6SeAtJANTWNSMCEH96qn4+12eoW8bYQ7flVyR7uyE+7NDKmMaHk0zWUQe0wluHyUnfj15g1tfRvwXyUEMLMagyFrhRh0n/wNBnV8XrX74OjqCseJfh3YnuLxhy4hAmw0di699Q3jTB3xJ8b7yg2NvoAF+lzSkQtiArTjEBVKuv"
+                                }
+                            ]
+                        }
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),copyIndex(1)))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[parameters('storageAccountName')]",
+                "nicCopy",
+				"[parameters('availabilitySetName')]"
+            ],
+			"copy": {
+				"name": "vmCopy",
+				"count": "[parameters('vmCount')]"
+			}
+        },
+    ]
+}
