@@ -71,7 +71,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[parameters('nicName')]",
             "apiVersion": "[variables('apiVersion')]",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "ipConfigurations": [
                     {
