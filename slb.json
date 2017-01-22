@@ -13,10 +13,6 @@
         "subnet1Name": {
             "defaultValue": "serverSubnet",
             "type": "String"
-        },
-        "location": {
-            "defaultValue": "westeurope",
-            "type": "String"
 		},
         "vmCount": {
             "defaultValue": 2,
