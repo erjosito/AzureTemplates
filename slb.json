@@ -33,12 +33,22 @@
 		"deployLBYesNo": {
 			"defaultValue": "no",
 			"type": "string"
+		},
+		"slbName": {
+			"defaultValue": "myLB",
+			"type": "string"
+		},
+		"backendConfigName": {
+			"defaultValue": "myBackendConfig",
+			"type": "string"
 		}
     },
  
     "variables": {
 		"vnetSpace": "10.0.0.0/16",
 		"subnet1Space": "10.0.1.0/24",
+		"slbIpPrefix": "10.0.1",
+		"slbVipSuffix": "100",
         "nicName": "[concat(parameters('vmPrefix'),'nic')]",
         "nsgName": "[concat(parameters('vmPrefix'),'nsg')]",
 		"diskName": "[concat(parameters('vmPrefix'),'disk')]",
@@ -55,7 +65,19 @@
                 },
                 "subnet1Name": {
                     "value": "[parameters('subnet1Name')]"
-                }
+                },
+                "slbName": {
+                    "value": "[parameters('slbName')]"
+                },
+                "backendConfigName": {
+                    "value": "[parameters('backendConfigName')]"
+                },
+                "ipPrefix": {
+                    "value": "[variables('slbIpPrefix')]"
+                },
+                "vipSuffix": {
+                    "value": "[variables('slbVipSuffix')]"
+                },
             },
             "no": {
             }
@@ -210,6 +232,8 @@
                     "nicName": { "value": "[concat(variables('nicName'), copyIndex(1))]" },
                     "vnetName": { "value": "[parameters('vnetName')]" },
                     "subnetName": { "value": "[parameters('subnet1Name')]"},
+                    "slbName": { "value": "[parameters('vnetName')]" },
+                    "backendConfigName": { "value": "[parameters('subnet1Name')]"},
                 }
 			},
 			"copy": {
