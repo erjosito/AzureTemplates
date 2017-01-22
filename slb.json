@@ -206,7 +206,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('LBTemplateUri')]",
+					"uri": "[variables('nicTemplateUri')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
