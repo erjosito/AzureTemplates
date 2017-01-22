@@ -57,7 +57,7 @@
                 ],
                 "backendAddressPools": [
                     {
-                        "name": "[variables('backendConfigName')]"
+                        "name": "[parameters('backendConfigName')]"
                     }
                 ],
                 "loadBalancingRules": [
@@ -74,7 +74,7 @@
                             "protocol": "Tcp",
                             "loadDistribution": "Default",
                             "backendAddressPool": {
-                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/backendAddressPools/', variables('backendConfigName'))]"
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/backendAddressPools/', parameters('backendConfigName'))]"
                             },
                             "probe": {
                                 "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/probes/', variables('probeName'))]"

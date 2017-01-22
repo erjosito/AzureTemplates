@@ -63,7 +63,7 @@
                 "vnetName": {
                     "value": "[parameters('vnetName')]"
                 },
-                "subnet1Name": {
+                "subnetName": {
                     "value": "[parameters('subnet1Name')]"
                 },
                 "slbName": {
@@ -232,7 +232,7 @@
                     "nicName": { "value": "[concat(variables('nicName'), copyIndex(1))]" },
                     "vnetName": { "value": "[parameters('vnetName')]" },
                     "subnetName": { "value": "[parameters('subnet1Name')]"},
-                    "slbName": { "value": "[parameters('vnetName')]" },
+                    "slbName": { "value": "[parameters('slbName')]" },
                     "backendConfigName": { "value": "[parameters('subnet1Name')]"},
                 }
 			},
