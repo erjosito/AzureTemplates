@@ -2,6 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+		"deployLBYesNo": {
+			"defaultValue": "yes",
+			"type": "string"
+		},
         "vnetName": {
             "defaultValue": "myVnet",
             "type": "String"
@@ -28,10 +32,6 @@
         },
 		"availabilitySetName": {
 			"defaultValue": "myAvSet",
-			"type": "string"
-		},
-		"deployLBYesNo": {
-			"defaultValue": "no",
 			"type": "string"
 		},
 		"slbName": {
@@ -84,7 +84,7 @@
         },
         "deployLBParameters": "[variables('deployLBParametersHash')[parameters('deployLBYesNo')]]",
 		"deployNicTemplate": {
-			"yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nic_nsg_lb.json",
+			"yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nic_nsg_slb.json",
 			"no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nic_nsg.json"
 		},
 		"nicTemplateURI": "[variables('deployNicTemplate')[parameters('deployLBYesNo')]]",
