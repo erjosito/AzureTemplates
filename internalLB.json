@@ -10,6 +10,10 @@
             "defaultValue": "serverSubnet",
             "type": "String"
 		},
+        "slbName": {
+            "defaultValue": "mySLB",
+            "type": "String"
+        },
         "ipPrefix": {
             "defaultValue": "10.0.1",
             "type": "String"
@@ -18,25 +22,27 @@
             "defaultValue": "100",
             "type": "String"
         },
-	}
+	},
     "variables": {
-		"vip": "[concat(parameters('ipPrefix'), parameters('vipSuffix'))]",
+		"vip": "[concat(parameters('ipPrefix'), '.', parameters('vipSuffix'))]",
 		"frontendConfigName": "myFrontendConfig",
 		"backendConfigName": "myBackendConfig",
 		"probeName": "myProbe",
-		"natName": "myNAT",
-	}
+		"inboundNat1Name": "myInboundNAT1",
+		"inboundNat2Name": "myInboundNAT2",
+		"slbConfigName": "mySLBConfig",
+},
     "resources": [
         {
-            "comments": "Generalized from resource: '/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/slbtest/providers/Microsoft.Network/loadBalancers/mySlb'.",
+            "comments": "Internal Load Balancer",
             "type": "Microsoft.Network/loadBalancers",
-            "name": "[parameters('loadBalancers_mySlb_name')]",
+            "name": "[parameters('slbName')]",
             "apiVersion": "2016-03-30",
             "location": "[resourceGroup().location]",
             "properties": {
                 "frontendIPConfigurations": [
                     {
-                        "name": "LB-Frontend",
+                        "name": "[variables('frontendConfigName')]",
                         "properties": {
                             "privateIPAddress": "[variables('vip')]",
                             "privateIPAllocationMethod": "Static",
@@ -48,15 +54,15 @@
                 ],
                 "backendAddressPools": [
                     {
-                        "name": "BackendConfig"
+                        "name": "[variables('backendConfigName')]"
                     }
                 ],
                 "loadBalancingRules": [
                     {
-                        "name": "HTTPslb",
+                        "name": "[variables('slbConfigName')]",
                         "properties": {
                             "frontendIPConfiguration": {
-                                "name": "[variables('frontendConfigName')]"
+                                "id": "[concat( resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/frontendIPConfigurations/', variables('frontendConfigName'))]"
                             },
                             "frontendPort": 8080,
                             "backendPort": 80,
@@ -65,17 +71,17 @@
                             "protocol": "Tcp",
                             "loadDistribution": "Default",
                             "backendAddressPool": {
-                                "name": "[variables('backendConfigName')]"
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/backendAddressPools/', variables('backendConfigName'))]"
                             },
                             "probe": {
-                                "name": "[variables('probeName')]"
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/probes/', variables('probeName'))]"
                             }
                         }
                     }
                 ],
                 "probes": [
                     {
-                        "name": "HealthProbe",
+                        "name": "[variables('probeName')]",
                         "properties": {
                             "protocol": "Tcp",
                             "port": 22,
@@ -86,10 +92,10 @@
                 ],
                 "inboundNatRules": [
                     {
-                        "name": "SSHnat",
+                        "name": "[variables('inboundNat1Name')]",
                         "properties": {
                             "frontendIPConfiguration": {
-                                "name": "[variables('frontendConfigName')]"
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/frontendIPConfigurations/', variables('frontendConfigName'))]"
                             },
                             "frontendPort": 1022,
                             "backendPort": 22,
@@ -97,10 +103,10 @@
                         }
                     },
                     {
-                        "name": "HTTPnat",
+                        "name": "[variables('inboundNat2Name')]",
                         "properties": {
                             "frontendIPConfiguration": {
-                                "id": "[variables('natName')]"
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/frontendIPConfigurations/', variables('frontendConfigName'))]"
                             },
                             "frontendPort": 1080,
                             "backendPort": 80,

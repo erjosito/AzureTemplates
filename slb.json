@@ -30,9 +30,12 @@
             "defaultValue": "slb-test-",
             "type": "String"
         },
-
 		"availabilitySetName": {
 			"defaultValue": "myAvSet",
+			"type": "string"
+		},
+		"deployLBYesNo": {
+			"defaultValue": "no",
 			"type": "string"
 		}
     },
@@ -44,6 +47,29 @@
         "nsgName": "[concat(parameters('vmPrefix'),'nsg')]",
 		"diskName": "[concat(parameters('vmPrefix'),'disk')]",
 		"apiVersion": "2016-03-30",
+		"deployLBTemplate": {
+			"yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/internalLB.json",
+			"no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
+		},
+		"LBTemplateURI": "[variables('deployLBTemplate')[parameters('deployLBYesNo')]]",
+        "deployLBParametersHash": {
+            "yes": {
+                "vnetName": {
+                    "value": "[parameters('vnetName')]"
+                },
+                "subnet1Name": {
+                    "value": "[parameters('subnet1Name')]"
+                }
+            },
+            "no": {
+            }
+        },
+        "deployLBParameters": "[variables('deployLBParametersHash')[parameters('deployLBYesNo')]]",
+		"deployNicTemplate": {
+			"yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nic_nsg_lb.json",
+			"no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nic_nsg.json"
+		},
+		"nicTemplateURI": "[variables('deployNicTemplate')[parameters('deployLBYesNo')]]",
 	},
 
     "resources": [
@@ -94,71 +120,6 @@
 			"apiVersion": "[variables('apiVersion')]",
 			"location": "[resourceGroup().location]"
 		},
-		{
-			"comments": "NSGs not required, but here for extra security",
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "name": "[concat(variables('nsgName'), copyIndex(1))]",
-            "apiVersion": "[variables('apiVersion')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "securityRules": [
-                    {
-                        "name": "default-allow-ssh",
-                        "properties": {
-                            "protocol": "TCP",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "22",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 1000,
-                            "direction": "Inbound"
-                        }
-                    }
-                ]
-            },
-            "resources": [],
-            "dependsOn": [],
-			"copy": {
-				"name": "nsgCopy",
-				"count": "[parameters('vmCount')]"
-			}
-        },
-        {
-			"comments": "NICs created with dynamic IP addresses",
-            "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(variables('nicName'),copyIndex(1))]",
-            "apiVersion": "[variables('apiVersion')]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "[concat('ipconfig', copyIndex(1))]",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('subnet1Name'))]"
-                            }
-                        }
-                    }
-                ],
-                "dnsSettings": {
-                    "dnsServers": []
-                },
-                "enableIPForwarding": false,
-                "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('nsgName'), copyIndex(1)))]"
-                }
-            },
-            "resources": [],
-            "dependsOn": [
-                "nsgCopy"
-            ],
-			"copy": {
-				"name": "nicCopy",
-				"count": "[parameters('vmCount')]"
-			}
-        },
 		{	
 			"comments": "VMs created and linked to NICs and storage account",
             "type": "Microsoft.Compute/virtualMachines",
@@ -225,5 +186,40 @@
 				"count": "[parameters('vmCount')]"
 			}
         },
+		{
+			"name": "internalLB",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('LBTemplateUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  "[variables('deployLBParameters')]"
+			}
+		},
+		{
+			"name": "[concat('nic',copyIndex(1))]",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('LBTemplateUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "nsgName": { "value": "[concat(variables('nsgName'), copyIndex(1))]" },
+                    "nicName": { "value": "[concat(variables('nicName'), copyIndex(1))]" },
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "subnetName": { "value": "[parameters('subnet1Name')]"},
+                }
+			},
+			"copy": {
+				"name": "nicCopy",
+				"count": "[parameters('vmCount')]"
+			}
+        }
     ]
 }
