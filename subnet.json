@@ -12,27 +12,27 @@
 		},
         "LBexternalInternal": {
             "defaultValue": "external",
-            "type": "String"
+            "type": "string"
         },
         "vnetName": {
             "defaultValue": "myVnet",
-            "type": "String"
+            "type": "string"
         },
         "storageAccountName": {
             "defaultValue": "[concat('storage',uniqueString(resourceGroup().id))]",
-            "type": "String"
+            "type": "string"
         },
         "subnetName": {
             "defaultValue": "serverSubnet",
-            "type": "String"
+            "type": "string"
 		},
         "adminPassword": {
             "defaultValue": "Microsoft123!",
-            "type": "SecureString"
+            "type": "securestring"
         },
         "vmPrefix": {
             "defaultValue": "slb-test-",
-            "type": "String"
+            "type": "string"
         },
 		"availabilitySetName": {
 			"defaultValue": "myAvSet",
@@ -52,7 +52,7 @@
 		},
 		"slbIpPrefix": {
             "defaultValue": "10.0.1",
-            "type": "string",
+            "type": "string"
         },
 		"slbVipSuffix": {
             "defaultValue": "100",
@@ -173,7 +173,6 @@
             },
             "resources": [],
             "dependsOn": [
-                "[parameters('storageAccountName')]",
                 "nicCopy",
 				"[parameters('availabilitySetName')]"
             ],

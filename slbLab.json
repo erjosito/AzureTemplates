@@ -4,30 +4,30 @@
     "parameters": {
         "vnetName": {
             "defaultValue": "myVnet",
-            "type": "String"
+            "type": "string"
         },
         "storageAccountName": {
             "defaultValue": "[concat('storage',uniqueString(resourceGroup().id))]",
-            "type": "String"
+            "type": "string"
         },
         "subnet1Name": {
             "defaultValue": "frontendSubnet",
-            "type": "String"
+            "type": "string"
 		},
         "subnet2Name": {
             "defaultValue": "backendSubnet",
-            "type": "String"
+            "type": "string"
 		},
         "adminPassword": {
             "defaultValue": "Microsoft123!",
-            "type": "SecureString"
+            "type": "securestring"
         }
     },
  
     "variables": {
 		"vnetSpace": "10.0.0.0/16",
 		"subnet1Space": "10.0.1.0/24",
-		"subnet1Space": "10.0.2.0/24",
+		"subnet2Space": "10.0.2.0/24",
 		"slbIpPrefix": "10.0.2",
 		"slbVipSuffix": "100",
 		"apiVersion": "2016-03-30"
@@ -103,7 +103,11 @@
                     "backendConfigName": { "value": "frontendServerFarm"},
                     "availabilitySetName": { "value": "frontendAvSet" },
                     "pipName": { "value": "frontendVIP" }
-                }
+                },
+                "dependsOn": [
+                    "[parameters('storageAccountName')]",
+                    "[parameters('vnetName')]"
+                ]
 			}
         },
 		{
@@ -130,7 +134,12 @@
                     "availabilitySetName": { "value": "backendAvSet" },
                     "slbIpPrefix": { "value": "[variables('slbIpPrefix')" },
                     "slbVipSuffix": { "value": "[variables('slbVipSuffix')]" }
-                }
+                },
+                "dependsOn": [
+                    "[parameters('storageAccountName')]",
+                    "[parameters('vnetName')]"
+                ]
 			}
-        }    ]
+        }   
+    ]
 }

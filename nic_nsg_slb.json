@@ -29,10 +29,10 @@
         "backendConfigName": {
             "defaultValue": "myBackendConfig",
             "type": "string"
-        },
+        }
     },
     "variables": {
-		"apiVersion": "2016-03-30",        
+		"apiVersion": "2016-03-30"        
     },
     "resources": [
         {
@@ -72,7 +72,7 @@
                 ]
             },
             "resources": [],
-            "dependsOn": [],
+            "dependsOn": []
         },
        {
 			"comments": "NICs created with dynamic IP addresses",
@@ -108,7 +108,7 @@
             "resources": [],
             "dependsOn": [
                 "[parameters('nsgName')]"
-            ],
+            ]
         }
     ]
 }
