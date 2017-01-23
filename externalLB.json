@@ -37,7 +37,7 @@
 		"probeName": "myProbe",
 		"inboundNat1Name": "myInboundNAT1",
 		"inboundNat2Name": "myInboundNAT2",
-		"slbConfigName": "mySLBConfig",
+		"slbConfigName": "mySLBConfig"
 },
     "resources": [
         {
@@ -138,6 +138,7 @@
             },
             "resources": [],
             "dependsOn": [
+                "[parameters('pipName')]"
             ]
         },
     ]
