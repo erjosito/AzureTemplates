@@ -128,8 +128,8 @@
                     "vmPrefix": { "value": "backend-vm-" },
                     "backendConfigName": { "value": "backendServerFarm"},
                     "availabilitySetName": { "value": "backendAvSet" },
-                    "ipPrefix": { "value": "[variables('slbIpPrefix')" },
-                    "vipSuffix": { "value": "[variables('slbVipSuffix')]" }
+                    "slbIpPrefix": { "value": "[variables('slbIpPrefix')" },
+                    "slbVipSuffix": { "value": "[variables('slbVipSuffix')]" }
                 }
 			}
         }    ]

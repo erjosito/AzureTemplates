@@ -49,14 +49,18 @@
 		"pipName": {
 			"defaultValue": "myPublicIp",
 			"type": "string"
-		}
+		},
+		"slbIpPrefix": {
+            "defaultValue": "10.0.1",
+            "type": "string",
+        },
+		"slbVipSuffix": {
+            "defaultValue": "100",
+            "type": "string"
+        }
     },
  
     "variables": {
-		"vnetSpace": "10.0.0.0/16",
-		"subnetSpace": "10.0.1.0/24",
-		"slbIpPrefix": "10.0.1",
-		"slbVipSuffix": "100",
         "nicName": "[concat(parameters('vmPrefix'),'nic')]",
         "nsgName": "[concat(parameters('vmPrefix'),'nsg')]",
 		"diskName": "[concat(parameters('vmPrefix'),'disk')]",
@@ -84,10 +88,10 @@
                     "value": "[parameters('backendConfigName')]"
                 },
                 "ipPrefix": {
-                    "value": "[variables('slbIpPrefix')]"
+                    "value": "[parameters('slbIpPrefix')]"
                 },
                 "vipSuffix": {
-                    "value": "[variables('slbVipSuffix')]"
+                    "value": "[parameters('slbVipSuffix')]"
                 },
                 "pipName": {
                     "value": "[parameters('pipName')]"
