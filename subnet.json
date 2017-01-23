@@ -214,7 +214,6 @@
                 }
 			},
             "dependsOn": [
-                "nsgCopy",
 				"[parameters('availabilitySetName')]"
             ],
 			"copy": {
