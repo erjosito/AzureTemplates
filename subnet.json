@@ -26,6 +26,10 @@
             "defaultValue": "serverSubnet",
             "type": "string"
 		},
+        "adminUsername": {
+            "defaultValue": "jose",
+            "type": "string"
+        },
         "adminPassword": {
             "defaultValue": "Microsoft123!",
             "type": "securestring"
@@ -148,18 +152,7 @@
                 },
                 "osProfile": {
                     "computerName": "[concat(parameters('vmPrefix'),copyIndex(1))]",
-                    "adminUsername": "jose",
-                    "linuxConfiguration": {
-                        "disablePasswordAuthentication": true,
-                        "ssh": {
-                            "publicKeys": [
-                                {
-                                    "path": "/home/jose/.ssh/authorized_keys",
-                                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoQjbTFEycjHjlJtk55JYbQ1NlHvVML3W6Veznm3s9W/lf7nBWVVzhWsh7Nj94QF9hPhFUwcL/CMdXggWyXEmCS57ZN5xVmD+Awv6nfS05Rcub1XMjDivlWh6/ly+8+/v6p5gbE8g+kUqqfEQtps81pQFNkXnKJ3MU7FI0kJ6an0Ln5r9LxRY8CL2wpbLODsvXwDOZ91jFbhliAiaJI/GnaQCVlWreBtD0ANG1YBF4T1w1CP3SeTkAhgzIpOfOLyrpchS3PBSEhgdLn7gY7CR+Vxlf7wB0jx7HzkUfuHf/VvFEjxTvHHvBbN7dWSl5y9rrULuYj2k/p8FhTJ1ri6y9"
-                                }
-                            ]
-                        }
-                    },
+                    "adminUsername": "[parameters('adminUsername')]",
                     "secrets": [],
                     "adminPassword": "[parameters('adminPassword')]"
                 },
