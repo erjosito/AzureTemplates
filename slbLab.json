@@ -103,12 +103,12 @@
                     "backendConfigName": { "value": "frontendServerFarm"},
                     "availabilitySetName": { "value": "frontendAvSet" },
                     "pipName": { "value": "frontendVIP" }
-                },
-                "dependsOn": [
-                    "[parameters('storageAccountName')]",
-                    "[parameters('vnetName')]"
-                ]
-			}
+                }
+            },
+            "dependsOn": [
+                "[parameters('storageAccountName')]",
+                "[parameters('vnetName')]"
+            ]
         },
 		{
 			"name": "backendSubnet",
@@ -134,12 +134,12 @@
                     "availabilitySetName": { "value": "backendAvSet" },
                     "slbIpPrefix": { "value": "[variables('slbIpPrefix')" },
                     "slbVipSuffix": { "value": "[variables('slbVipSuffix')]" }
-                },
-                "dependsOn": [
-                    "[parameters('storageAccountName')]",
-                    "[parameters('vnetName')]"
-                ]
-			}
+                }
+            },
+            "dependsOn": [
+                "[parameters('storageAccountName')]",
+                "[parameters('vnetName')]"
+            ]
         }   
     ]
 }

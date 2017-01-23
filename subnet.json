@@ -155,7 +155,7 @@
                             "publicKeys": [
                                 {
                                     "path": "/home/jose/.ssh/authorized_keys",
-                                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDn4i0NkH4uFL7B87MJBW0TyQcsk99vQNlHyZLJyRielhU2kxy73K4ecOEcYQPu0B58KbQfHM2EooaHbZIDAaZK8K62yaYz5eV7YBMr5TdN9Tw5u1GGT5LrWsOYoHcQtcSnTRbBSWZDFIx5eJWebBxdDh61LbEftyOLg16xsLRIqp6SeAtJANTWNSMCEH96qn4+12eoW8bYQ7flVyR7uyE+7NDKmMaHk0zWUQe0wluHyUnfj15g1tfRvwXyUEMLMagyFrhRh0n/wNBnV8XrX74OjqCseJfh3YnuLxhy4hAmw0di699Q3jTB3xJ8b7yg2NvoAF+lzSkQtiArTjEBVKuv"
+                                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoQjbTFEycjHjlJtk55JYbQ1NlHvVML3W6Veznm3s9W/lf7nBWVVzhWsh7Nj94QF9hPhFUwcL/CMdXggWyXEmCS57ZN5xVmD+Awv6nfS05Rcub1XMjDivlWh6/ly+8+/v6p5gbE8g+kUqqfEQtps81pQFNkXnKJ3MU7FI0kJ6an0Ln5r9LxRY8CL2wpbLODsvXwDOZ91jFbhliAiaJI/GnaQCVlWreBtD0ANG1YBF4T1w1CP3SeTkAhgzIpOfOLyrpchS3PBSEhgdLn7gY7CR+Vxlf7wB0jx7HzkUfuHf/VvFEjxTvHHvBbN7dWSl5y9rrULuYj2k/p8FhTJ1ri6y9"
                                 }
                             ]
                         }
