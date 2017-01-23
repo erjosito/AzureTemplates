@@ -83,8 +83,8 @@
                             "frontendIPConfiguration": {
                                 "id": "[concat( resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/frontendIPConfigurations/', variables('frontendConfigName'))]"
                             },
-                            "frontendPort": 8080,
-                            "backendPort": 80,
+                            "frontendPort": 1022,
+                            "backendPort": 22,
                             "enableFloatingIP": false,
                             "idleTimeoutInMinutes": 4,
                             "protocol": "Tcp",
@@ -109,30 +109,7 @@
                         }
                     }
                 ],
-                "inboundNatRules": [
-                    {
-                        "name": "[variables('inboundNat1Name')]",
-                        "properties": {
-                            "frontendIPConfiguration": {
-                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/frontendIPConfigurations/', variables('frontendConfigName'))]"
-                            },
-                            "frontendPort": 1022,
-                            "backendPort": 22,
-                            "protocol": "Tcp"
-                        }
-                    },
-                    {
-                        "name": "[variables('inboundNat2Name')]",
-                        "properties": {
-                            "frontendIPConfiguration": {
-                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('slbName')), '/frontendIPConfigurations/', variables('frontendConfigName'))]"
-                            },
-                            "frontendPort": 1080,
-                            "backendPort": 80,
-                            "protocol": "Tcp"
-                        }
-                    }
-                ],
+                "inboundNatRules": [],
                 "outboundNatRules": [],
                 "inboundNatPools": []
             },

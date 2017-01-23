@@ -11,7 +11,11 @@
             "type": "String"
         },
         "subnet1Name": {
-            "defaultValue": "serverSubnet",
+            "defaultValue": "frontendSubnet",
+            "type": "String"
+		},
+        "subnet2Name": {
+            "defaultValue": "backendSubnet",
             "type": "String"
 		},
         "adminPassword": {
@@ -23,7 +27,8 @@
     "variables": {
 		"vnetSpace": "10.0.0.0/16",
 		"subnet1Space": "10.0.1.0/24",
-		"slbIpPrefix": "10.0.1",
+		"subnet1Space": "10.0.2.0/24",
+		"slbIpPrefix": "10.0.2",
 		"slbVipSuffix": "100",
 		"apiVersion": "2016-03-30"
 	},
@@ -63,6 +68,12 @@
                         "properties": {
                             "addressPrefix": "[variables('subnet1Space')]"
                         }
+                    },
+                    {
+                        "name": "[parameters('subnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet2Space')]"
+                        }
                     }
                 ]
             },
@@ -88,12 +99,38 @@
                     "slbName": { "value": "frontendSLB" },
                     "vmCount": { "value": 2 },
                     "adminPassword": { "value": "[parameters('adminPassword')]" },
-                    "vmPrefix": { "value": "frontend-vm" },
+                    "vmPrefix": { "value": "frontend-vm-" },
                     "backendConfigName": { "value": "frontendServerFarm"},
                     "availabilitySetName": { "value": "frontendAvSet" },
                     "pipName": { "value": "frontendVIP" }
                 }
 			}
-        }
-    ]
+        },
+		{
+			"name": "backendSubnet",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/subnet.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+                    "subnetName": { "value": "[parameters('subnet2Name')]"},
+                    "deployLBYesNo": { "value": "yes" },
+                    "LBexternalInternal": { "value": "internal" },
+                    "slbName": { "value": "backendSLB" },
+                    "vmCount": { "value": 2 },
+                    "adminPassword": { "value": "[parameters('adminPassword')]" },
+                    "vmPrefix": { "value": "backend-vm-" },
+                    "backendConfigName": { "value": "backendServerFarm"},
+                    "availabilitySetName": { "value": "backendAvSet" },
+                    "ipPrefix": { "value": "[variables('slbIpPrefix')" },
+                    "vipSuffix": { "value": "[variables('slbVipSuffix')]" }
+                }
+			}
+        }    ]
 }

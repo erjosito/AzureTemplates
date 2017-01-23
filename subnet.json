@@ -4,7 +4,7 @@
     "parameters": {
         "vmCount": {
             "defaultValue": 2,
-            "type": "int",
+            "type": "int"
         },
 		"deployLBYesNo": {
 			"defaultValue": "yes",
@@ -105,46 +105,6 @@
 	},
 
     "resources": [
-        {
-			"comments": "Storage account for VM disks",
-			"type": "Microsoft.Storage/storageAccounts",
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
-            },
-            "kind": "Storage",
-            "name": "[parameters('storageAccountName')]",
-            "apiVersion": "2016-01-01",
-            "location": "[resourceGroup().location]",
-            "tags": {},
-            "properties": {},
-            "resources": [],
-            "dependsOn": []
-        },
-        {
-            "comments": "vnet for the SLB lab",
-            "type": "Microsoft.Network/virtualNetworks",
-            "name": "[parameters('vnetName')]",
-            "apiVersion": "[variables('apiVersion')]",
-            "location":  "[resourceGroup().location]",
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('vnetSpace')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[parameters('subnetName')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnetSpace')]"
-                        }
-                    }
-                ]
-            },
-            "resources": [],
-            "dependsOn": []
-        },
 		{
 			"comments": "SLB requires availability set",
 			"type": "Microsoft.Compute/availabilitySets",
@@ -247,9 +207,14 @@
                     "vnetName": { "value": "[parameters('vnetName')]" },
                     "subnetName": { "value": "[parameters('subnetName')]"},
                     "slbName": { "value": "[parameters('slbName')]" },
-                    "backendConfigName": { "value": "[parameters('backendConfigName')]"},
+                    "backendConfigName": { "value": "[parameters('backendConfigName')]"}
                 }
 			},
+            "dependsOn": [
+                "[parameters('storageAccountName')]",
+                "nicCopy",
+				"[parameters('availabilitySetName')]"
+            ],
 			"copy": {
 				"name": "nicCopy",
 				"count": "[parameters('vmCount')]"
