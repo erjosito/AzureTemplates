@@ -76,7 +76,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/slb.json",
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/subnet.json",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
@@ -84,7 +84,7 @@
                     "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet1Name')]"},
                     "deployLBYesNo": { "value": "yes" },
-                    "LBexternalInternalName": { "value": "external" },
+                    "LBexternalInternal": { "value": "external" },
                     "slbName": { "value": "frontendSLB" },
                     "vmCount": { "value": 2 },
                     "adminPassword": { "value": "[parameters('adminPassword')]" },

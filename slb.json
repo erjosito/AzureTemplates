@@ -39,7 +39,7 @@
     "variables": {
 		"deployLBTemplate": {
 			"internal": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/internalLB.json",
-			"external": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/external.json"
+			"external": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/externalLB.json"
 		},
 		"LBTemplateURI": "[variables('deployLBTemplate')[parameters('externalInternal')]]"
     },
