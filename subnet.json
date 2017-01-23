@@ -214,7 +214,7 @@
                 }
 			},
             "dependsOn": [
-                "nicCopy",
+                "nsgCopy",
 				"[parameters('availabilitySetName')]"
             ],
 			"copy": {
