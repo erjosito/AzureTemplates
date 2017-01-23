@@ -214,7 +214,6 @@
                 }
 			},
             "dependsOn": [
-                "[parameters('storageAccountName')]",
                 "nicCopy",
 				"[parameters('availabilitySetName')]"
             ],
