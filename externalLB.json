@@ -31,17 +31,28 @@
             "type": "String"
         }
 	},
-
     "variables": {
 		"vip": "[concat(parameters('ipPrefix'), '.', parameters('vipSuffix'))]",
 		"frontendConfigName": "myFrontendConfig",
 		"probeName": "myProbe",
 		"inboundNat1Name": "myInboundNAT1",
 		"inboundNat2Name": "myInboundNAT2",
-		"slbConfigName": "mySLBConfig"
-    },
-
+		"slbConfigName": "mySLBConfig",
+},
     "resources": [
+        {
+            "comments": "Public IP address",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('pipName')]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
         {
             "comments": "Internal Load Balancer",
             "type": "Microsoft.Network/loadBalancers",
@@ -53,10 +64,9 @@
                     {
                         "name": "[variables('frontendConfigName')]",
                         "properties": {
-                            "privateIPAddress": "[variables('vip')]",
-                            "privateIPAllocationMethod": "Static",
-                            "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('subnetName'))]"
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipName'))]"
                             }
                         }
                     }
@@ -129,6 +139,6 @@
             "resources": [],
             "dependsOn": [
             ]
-        }
+        },
     ]
 }
