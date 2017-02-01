@@ -77,16 +77,16 @@
     },
     "variables": {
         "nicName": {
-            "nic0": "asav-01-Nic0",
-            "nic1": "asav-01-Nic1",
-            "nic2": "asav-01-Nic2",
+            "nic0": "asav-01-nic0",
+            "nic1": "asav-01-nic1",
+            "nic2": "asav-01-nic2",
             "nic3": "asav-01-Nic3",
         },
         "UDRName": {
-            "nic0": "asav-01-Nic0",
-            "nic1": "asav-01-Nic1",
-            "nic2": "asav-01-Nic2",
-            "nic3": "asav-01-Nic3",
+            "nic0": "asav-01-udr0",
+            "nic1": "asav-01-udr1",
+            "nic2": "asav-01-udr2",
+            "nic3": "asav-01-udr3",
         }
     },
     "resources": [
@@ -352,7 +352,7 @@
             "type": "Microsoft.Network/routeTables",
             "name": "[variables('UDRName')['nic3']]",
             "apiVersion": "2016-03-30",
-            "location": "[resourceGroup().location]]",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "routes": [
                     {

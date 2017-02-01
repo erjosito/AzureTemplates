@@ -22,21 +22,13 @@
             "type": "string",
             "metadata": { "description": "Name for the second subnet" }
 		},
-        "storageAccountName": {
-            "defaultValue": "asatestjoselito",
-            "type": "string"
-        },
         "asaName": {
             "defaultValue": "asav-01",
             "type": "string"
         },
         "defaultPwd": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/PermanentLab/providers/Microsoft.KeyVault/vaults/erjosito"
-                },
-                "secretName": "defaultPwd"
-            }
+            "defaultValue": null,
+            "type": "securestring"
         },
         "pipName": {
             "defaultValue": "asav-publicIP",
@@ -147,7 +139,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/subnet.json",
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/asav.json",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
@@ -166,7 +158,7 @@
                     "ip2": { "value": "[parameters('ip2')]"},
                     "ip3": { "value": "[parameters('ip3')]"},
                     "pipName": { "value": "[parameters('pipName')]"},
-                    "adminPassword": { "value": "[parameters('defaultPwd')]" },
+                    "asaPwd": { "value": "[parameters('defaultPwd')]" },
                     "asaName": { "value": "asav-01" },
                 }
             },
@@ -218,7 +210,7 @@
                     "deployLBYesNo": { "value": "no" },
                     "vmCount": { "value": 2 },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
-                    "adminPassword": { "value": "[parameters('adminPassword')]" },
+                    "adminPassword": { "value": "[parameters('defaultPwd')]" },
                     "vmPrefix": { "value": "subnet2-vm-" },
                     "availabilitySetName": { "value": "frontendAvSet" },
                 }
