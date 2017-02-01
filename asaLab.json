@@ -1,0 +1,232 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "defaultValue": "myVnet",
+            "type": "string",
+            "metadata": { "description": "Name of the vNet that will be created containing the subnets and other objects" }
+        },
+        "storageAccountName": {
+            "defaultValue": "[concat('storage',uniqueString(resourceGroup().id))]",
+            "type": "string",
+            "metadata": { "description": "Name of the storage account used for the VMs. If not specified, a unique ID will be taken" }
+        },
+        "subnet1Name": {
+            "defaultValue": "frontendSubnet",
+            "type": "string",
+            "metadata": { "description": "Name for the first subnet" }
+		},
+        "adminUsername": {
+            "defaultValue": "jose",
+            "type": "string",
+            "metadata": { "description": "Name for the second subnet" }
+		},
+        "storageAccountName": {
+            "defaultValue": "asatestjoselito",
+            "type": "string"
+        },
+        "asaName": {
+            "defaultValue": "asav-01",
+            "type": "string"
+        },
+        "defaultPwd": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/PermanentLab/providers/Microsoft.KeyVault/vaults/erjosito"
+                },
+                "secretName": "defaultPwd"
+            }
+        },
+        "pipName": {
+            "defaultValue": "asav-publicIP",
+            "type": "string"
+        },
+        "subnet0Name": {
+            "defaultValue": "subnet0",
+            "type": "string"
+        },
+        "subnet1Name": {
+            "defaultValue": "subnet1",
+            "type": "string"
+        },
+        "subnet2Name": {
+            "defaultValue": "subnet2",
+            "type": "string"
+        },
+        "subnet3Name": {
+            "defaultValue": "subnet3",
+            "type": "string"
+        },
+        "subnet0Prefix": {
+            "defaultValue": "10.0.0.0/24",
+            "type": "string"
+        },
+        "subnet1Prefix": {
+            "defaultValue": "10.0.1.0/24",
+            "type": "string"
+        },
+        "subnet2Prefix": {
+            "defaultValue": "10.0.2.0/24",
+            "type": "string"
+        },
+        "subnet3Prefix": {
+            "defaultValue": "10.0.3.0/24",
+            "type": "string"
+        },
+        "ip0": {
+            "defaultValue": "10.0.0.1",
+            "type": "string"
+        },
+        "ip1": {
+            "defaultValue": "10.0.1.1",
+            "type": "string"
+        },
+        "ip2": {
+            "defaultValue": "10.0.2.1",
+            "type": "string"
+        },
+        "ip3": {
+            "defaultValue": "10.0.3.1",
+            "type": "string"
+        },
+    },
+ 
+    "variables": {
+		"vnetSpace": "10.0.0.0/16",
+		"subnet1Space": "10.0.1.0/24",
+		"apiVersion": "2016-03-30"
+	},
+
+    "resources": [
+        {
+			"comments": "Storage account for VM disks",
+			"type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccountName')]",
+            "apiVersion": "2016-01-01",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "vnet for the SLB lab",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('vnetName')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location":  "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('vnetSpace')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet1Space')]"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+		{
+			"name": "asa",
+			"comments": "Including vnet!",
+            "type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/subnet.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+                    "subnet0Name": { "value": "[parameters('subnet0Name')]"},
+                    "subnet1Name": { "value": "[parameters('subnet1Name')]"},
+                    "subnet2Name": { "value": "[parameters('subnet2Name')]"},
+                    "subnet3Name": { "value": "[parameters('subnet3Name')]"},
+                    "subnet0Prefix": { "value": "[parameters('subnet0Prefix')]"},
+                    "subnet1Prefix": { "value": "[parameters('subnet1Prefix')]"},
+                    "subnet2Prefix": { "value": "[parameters('subnet2Prefix')]"},
+                    "subnet3Prefix": { "value": "[parameters('subnet3Prefix')]"},
+                    "ip0": { "value": "[parameters('ip0')]"},
+                    "ip1": { "value": "[parameters('ip1')]"},
+                    "ip2": { "value": "[parameters('ip2')]"},
+                    "ip3": { "value": "[parameters('ip3')]"},
+                    "pipName": { "value": "[parameters('pipName')]"},
+                    "adminPassword": { "value": "[parameters('defaultPwd')]" },
+                    "asaName": { "value": "asav-01" },
+                }
+            },
+            "dependsOn": [
+                "[parameters('storageAccountName')]",
+            ]
+        },
+		{
+			"name": "subnet1VMs",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/subnet.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+                    "subnetName": { "value": "[parameters('subnet1Name')]"},
+                    "deployLBYesNo": { "value": "no" },
+                    "vmCount": { "value": 2 },
+                    "adminUsername": { "value": "[parameters('adminUsername')]" },
+                    "adminPassword": { "value": "[parameters('adminPassword')]" },
+                    "vmPrefix": { "value": "subnet1-vm-" },
+                    "availabilitySetName": { "value": "frontendAvSet" },
+                }
+            },
+            "dependsOn": [
+                "[parameters('storageAccountName')]",
+                "asa"
+            ]
+        },
+		{
+			"name": "subnet2VMs",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/subnet.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+                    "subnetName": { "value": "[parameters('subnet2Name')]"},
+                    "deployLBYesNo": { "value": "no" },
+                    "vmCount": { "value": 2 },
+                    "adminUsername": { "value": "[parameters('adminUsername')]" },
+                    "adminPassword": { "value": "[parameters('adminPassword')]" },
+                    "vmPrefix": { "value": "subnet2-vm-" },
+                    "availabilitySetName": { "value": "frontendAvSet" },
+                }
+            },
+            "dependsOn": [
+                "[parameters('storageAccountName')]",
+                "asa"
+            ]
+        }
+    ]
+}

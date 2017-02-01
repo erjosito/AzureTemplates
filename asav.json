@@ -1,0 +1,455 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiVersion": {
+            "defaultValue": "2015-06-15",
+            "type": "string"
+        },
+        "vnetName": {
+            "defaultValue": "myVnet",
+            "type": "string"
+        },
+        "storageAccountName": {
+            "defaultValue": "asatestjoselito",
+            "type": "string"
+        },
+        "asaName": {
+            "defaultValue": "asav-01",
+            "type": "string"
+        },
+        "asaPwd": {
+            "defaultValue": null,
+            "type": "securestring",
+        },
+        "pipName": {
+            "defaultValue": "asav-publicIP",
+            "type": "string"
+        },
+        "subnet0Name": {
+            "defaultValue": "subnet0",
+            "type": "string"
+        },
+        "subnet1Name": {
+            "defaultValue": "subnet1",
+            "type": "string"
+        },
+        "subnet2Name": {
+            "defaultValue": "subnet2",
+            "type": "string"
+        },
+        "subnet3Name": {
+            "defaultValue": "subnet3",
+            "type": "string"
+        },
+        "subnet0Prefix": {
+            "defaultValue": "10.0.0.0/24",
+            "type": "string"
+        },
+        "subnet1Prefix": {
+            "defaultValue": "10.0.1.0/24",
+            "type": "string"
+        },
+        "subnet2Prefix": {
+            "defaultValue": "10.0.2.0/24",
+            "type": "string"
+        },
+        "subnet3Prefix": {
+            "defaultValue": "10.0.3.0/24",
+            "type": "string"
+        },
+        "ip0": {
+            "defaultValue": "10.0.0.1",
+            "type": "string"
+        },
+        "ip1": {
+            "defaultValue": "10.0.1.1",
+            "type": "string"
+        },
+        "ip2": {
+            "defaultValue": "10.0.2.1",
+            "type": "string"
+        },
+        "ip3": {
+            "defaultValue": "10.0.3.1",
+            "type": "string"
+        },
+    },
+    "variables": {
+        "nicName": {
+            "nic0": "asav-01-Nic0",
+            "nic1": "asav-01-Nic1",
+            "nic2": "asav-01-Nic2",
+            "nic3": "asav-01-Nic3",
+        },
+        "UDRName": {
+            "nic0": "asav-01-Nic0",
+            "nic1": "asav-01-Nic1",
+            "nic2": "asav-01-Nic2",
+            "nic3": "asav-01-Nic3",
+        }
+    },
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/asatest/providers/Microsoft.Compute/virtualMachines/asav-01'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('asaName')]",
+            "apiVersion": "2015-06-15",
+            "location": "[resourceGroup().location]",
+            "plan": {
+                "name": "asav-azure-byol",
+                "product": "cisco-asav",
+                "publisher": "cisco"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D3_v2"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "cisco",
+                        "offer": "cisco-asav",
+                        "sku": "asav-azure-byol",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[concat(parameters('asaName'),'-disk')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('http', '://', parameters('storageAccountName'), '.blob.core.windows.net', concat('/vhds/', parameters('asaName'),'-disk.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('asaName')]",
+                    "adminUsername": "jose",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('asaPwd')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName')['nic0'])]",
+                            "properties": {
+                                "primary": true
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName')['nic1'])]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName')['nic2'])]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName')['nic3'])]",
+                            "properties": {
+                                "primary": false
+                            }
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "nic0",
+                "nic1",
+                "nic2",
+                "nic3"
+            ]
+        },
+		{
+			"name": "nic0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nic_noNSG_noSLB_PIP_static.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "nicName": {"value": "[variables('nicName')['nic0']]"},
+                    "ipAddress": { "value": "[parameters('ip0')]" },                    
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+                    "subnetName": { "value": "[parameters('subnet0Name')]"},
+                    "pipName": { "value": "[parameters('pipName')]" }
+                }
+            },
+            "dependsOn": [
+                "[parameters('vnetName')]"  
+            ]
+        },
+		{
+			"name": "nic1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nic_noNSG_noSLB_noPIP_static.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "nicName": {"value": "[variables('nicName')['nic1']]"},
+                    "ipAddress": { "value": "[parameters('ip1')]" },                    
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+                    "subnetName": { "value": "[parameters('subnet1Name')]"}
+                }
+            },
+            "dependsOn": [
+                "[parameters('vnetName')]"
+            ]
+        },
+		{
+			"name": "nic2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nic_noNSG_noSLB_noPIP_static.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "nicName": {"value": "[variables('nicName')['nic2']]"},
+                    "ipAddress": { "value": "[parameters('ip2')]" },                    
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+                    "subnetName": { "value": "[parameters('subnet2Name')]"}
+                }
+            },
+            "dependsOn": [
+                "[parameters('vnetName')]"
+            ]
+        },
+		{
+			"name": "nic3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nic_noNSG_noSLB_noPIP_static.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "nicName": {"value": "[variables('nicName')['nic3']]"},
+                    "ipAddress": { "value": "[parameters('ip3')]" },                    
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+                    "subnetName": { "value": "[parameters('subnet1Name')]"}
+                }
+            },
+            "dependsOn": [
+                "[parameters('vnetName')]"
+            ]
+        },
+        {
+            "comments": "Routing for subnet 1",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[variables('UDRName')['nic1']]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "subnet0",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet0Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip1')]"
+                        }
+                    },
+                    {
+                        "name": "subnet2",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet2Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip1')]"
+                        }
+                    },
+                    {
+                        "name": "subnet3",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet3Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip1')]"
+                        }
+                    },
+                    {
+                        "name": "Default-Route-To-ASAv",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip1')]"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Routing for subnet 2",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[variables('UDRName')['nic2']]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "subnet0",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet0Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip2')]"
+                        }
+                    },
+                    {
+                        "name": "subnet1",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet1Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip2')]"
+                        }
+                    },
+                    {
+                        "name": "subnet3",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet3Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip2')]"
+                        }
+                    },
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip2')]"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Routing table for subnet 3",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[variables('UDRName')['nic3']]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "subnet0",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet0Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip3')]"
+                        }
+                    },
+                    {
+                        "name": "subnet1",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet2Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip3')]"
+                        }
+                    },
+                    {
+                        "name": "subnet2",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet2Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip3')]"
+                        }
+                    },
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('ip3')]"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Vnet creation, including UDR",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('vnetName')]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.2.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "subnet0",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet0Prefix')]",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', variables('UDRName')['nic0'])]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "subnet1",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet1Prefix')]",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', variables('UDRName')['nic1'])]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "subnet2",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet2Prefix')]",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', variables('UDRName')['nic2'])]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "subnet3",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet3Prefix')]",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', variables('UDRName')['nic3'])]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": [
+                "[variables('UDRName')['nic0']]",
+                "[variables('UDRName')['nic1']]",
+                "[variables('UDRName')['nic2']]",
+                "[variables('UDRName')['nic3']]"
+            ]
+        }
+    ]
+}

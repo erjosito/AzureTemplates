@@ -1,0 +1,111 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "defaultValue": "myVnet",
+            "type": "string",
+            "metadata": { "description": "Name of the vNet that will be created containing the subnets and other objects" }
+        },
+        "storageAccountName": {
+            "defaultValue": "[concat('storage',uniqueString(resourceGroup().id))]",
+            "type": "string",
+            "metadata": { "description": "Name of the storage account used for the VMs. If not specified, a unique ID will be taken" }
+        },
+        "subnet1Name": {
+            "defaultValue": "frontendSubnet",
+            "type": "string",
+            "metadata": { "description": "Name for the first subnet" }
+		},
+        "adminUsername": {
+            "defaultValue": "jose",
+            "type": "string",
+            "metadata": { "description": "Name for the second subnet" }
+		},
+        "adminPassword": {
+            "defaultValue": "Microsoft123!",
+            "type": "securestring",
+            "metadata": { "description": "Normally the default value would be null. Set to a fixed value for quicker testing. Only relevant when sudoing, since SSH is authenticated via the public SSH key. I should probably put the SSH key as argument here" }
+        }
+    },
+ 
+    "variables": {
+		"vnetSpace": "10.0.0.0/16",
+		"subnet1Space": "10.0.1.0/24",
+		"apiVersion": "2016-03-30"
+	},
+
+    "resources": [
+        {
+			"comments": "Storage account for VM disks",
+			"type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccountName')]",
+            "apiVersion": "2016-01-01",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "vnet for the SLB lab",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('vnetName')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location":  "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('vnetSpace')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet1Space')]"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+		{
+			"name": "frontendSubnet",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/subnet.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters":  {
+                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+                    "subnetName": { "value": "[parameters('subnet1Name')]"},
+                    "deployLBYesNo": { "value": "yes" },
+                    "LBexternalInternal": { "value": "external" },
+                    "slbName": { "value": "frontendSLB" },
+                    "vmCount": { "value": 2 },
+                    "adminUsername": { "value": "[parameters('adminUsername')]" },
+                    "adminPassword": { "value": "[parameters('adminPassword')]" },
+                    "vmPrefix": { "value": "frontend-vm-" },
+                    "backendConfigName": { "value": "frontendServerFarm"},
+                    "availabilitySetName": { "value": "frontendAvSet" },
+                    "pipName": { "value": "frontendVIP" }
+                }
+            },
+            "dependsOn": [
+                "[parameters('storageAccountName')]",
+                "[parameters('vnetName')]"
+            ]
+        }
+    ]
+}
