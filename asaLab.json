@@ -139,6 +139,7 @@
                     "ip2": { "value": "[parameters('ip2')]"},
                     "ip3": { "value": "[parameters('ip3')]"},
                     "pipName": { "value": "[parameters('pipName')]"},
+                    "asaUsr": { "value": "[parameters('adminUsername')]" },
                     "asaPwd": { "value": "[parameters('defaultPwd')]" },
                     "asaName": { "value": "asav-01" }
                 }
@@ -164,7 +165,8 @@
                     "deployLBYesNo": { "value": "no" },
                     "vmCount": { "value": 2 },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
-                    "adminPassword": { "value": "[parameters('defaultPwd')]" }
+                    "adminPassword": { "value": "[parameters('defaultPwd')]" },
+                    "availabilitySetName": { "value": "[concat(parameters('subnet1Name'), '-AvSet')]" }
                 }
             },
             "dependsOn": [
@@ -190,8 +192,7 @@
                     "vmCount": { "value": 2 },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": { "value": "[parameters('defaultPwd')]" },
-                    "vmPrefix": { "value": "subnet2-vm-" },
-                    "availabilitySetName": { "value": "frontendAvSet" }
+                    "availabilitySetName": { "value": "[concat(parameters('subnet2Name'), '-AvSet')]" }
                 }
             },
             "dependsOn": [
