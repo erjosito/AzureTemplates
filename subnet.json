@@ -188,6 +188,7 @@
 			}
 		},
 		{
+            "comments": "Create all NICs for the VMs",
 			"name": "[concat('nic',copyIndex(1))]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",

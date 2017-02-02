@@ -71,21 +71,21 @@
             "type": "string"
         },
         "ip0": {
-            "defaultValue": "10.0.0.1",
+            "defaultValue": "10.0.0.101",
             "type": "string"
         },
         "ip1": {
-            "defaultValue": "10.0.1.1",
+            "defaultValue": "10.0.1.101",
             "type": "string"
         },
         "ip2": {
-            "defaultValue": "10.0.2.1",
+            "defaultValue": "10.0.2.101",
             "type": "string"
         },
         "ip3": {
-            "defaultValue": "10.0.3.1",
+            "defaultValue": "10.0.3.101",
             "type": "string"
-        },
+        }
     },
  
     "variables": {
@@ -111,33 +111,9 @@
             "resources": [],
             "dependsOn": []
         },
-        {
-            "comments": "vnet for the SLB lab",
-            "type": "Microsoft.Network/virtualNetworks",
-            "name": "[parameters('vnetName')]",
-            "apiVersion": "[variables('apiVersion')]",
-            "location":  "[resourceGroup().location]",
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('vnetSpace')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[parameters('subnet1Name')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnet1Space')]"
-                        }
-                    }
-                ]
-            },
-            "resources": [],
-            "dependsOn": []
-        },
 		{
+			"comments": "ASA, including vnet, subnets and UDR!",
 			"name": "asa",
-			"comments": "Including vnet!",
             "type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
@@ -164,11 +140,11 @@
                     "ip3": { "value": "[parameters('ip3')]"},
                     "pipName": { "value": "[parameters('pipName')]"},
                     "asaPwd": { "value": "[parameters('defaultPwd')]" },
-                    "asaName": { "value": "asav-01" },
+                    "asaName": { "value": "asav-01" }
                 }
             },
             "dependsOn": [
-                "[parameters('storageAccountName')]",
+                "[parameters('storageAccountName')]"
             ]
         },
 		{
@@ -182,15 +158,13 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
-                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "vnetName": { "value": "[concat(parameters('subnet1Name'), '-', parameters('vnetName'))]" },
                     "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet1Name')]"},
                     "deployLBYesNo": { "value": "no" },
                     "vmCount": { "value": 2 },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
-                    "adminPassword": { "value": "[parameters('adminPassword')]" },
-                    "vmPrefix": { "value": "subnet1-vm-" },
-                    "availabilitySetName": { "value": "frontendAvSet" },
+                    "adminPassword": { "value": "[parameters('defaultPwd')]" }
                 }
             },
             "dependsOn": [
@@ -209,7 +183,7 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
-                    "vnetName": { "value": "[parameters('vnetName')]" },
+                    "vnetName": { "value": "[concat(parameters('subnet2Name'), '-', parameters('vnetName'))]" },
                     "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet2Name')]"},
                     "deployLBYesNo": { "value": "no" },
@@ -217,7 +191,7 @@
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": { "value": "[parameters('defaultPwd')]" },
                     "vmPrefix": { "value": "subnet2-vm-" },
-                    "availabilitySetName": { "value": "frontendAvSet" },
+                    "availabilitySetName": { "value": "frontendAvSet" }
                 }
             },
             "dependsOn": [
