@@ -182,7 +182,6 @@
                     "nicName": {"value": "[variables('nicName')['nic0']]"},
                     "ipAddress": { "value": "[parameters('ip0')]" },                    
                     "vnetName": { "value": "[parameters('vnetName')]" },
-                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet0Name')]"},
                     "pipName": { "value": "[parameters('pipName')]" }
                 }
@@ -205,7 +204,6 @@
                     "nicName": {"value": "[variables('nicName')['nic1']]"},
                     "ipAddress": { "value": "[parameters('ip1')]" },                    
                     "vnetName": { "value": "[parameters('vnetName')]" },
-                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet1Name')]"}
                 }
             },
@@ -227,7 +225,6 @@
                     "nicName": {"value": "[variables('nicName')['nic2']]"},
                     "ipAddress": { "value": "[parameters('ip2')]" },                    
                     "vnetName": { "value": "[parameters('vnetName')]" },
-                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet2Name')]"}
                 }
             },
@@ -249,7 +246,6 @@
                     "nicName": {"value": "[variables('nicName')['nic3']]"},
                     "ipAddress": { "value": "[parameters('ip3')]" },                    
                     "vnetName": { "value": "[parameters('vnetName')]" },
-                    "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet1Name')]"}
                 }
             },
