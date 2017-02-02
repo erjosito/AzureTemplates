@@ -82,7 +82,7 @@
             "nic2": "asav-01-nic2",
             "nic3": "asav-01-Nic3",
         },
-        "UDRName": {
+        "udrName": {
             "nic0": "asav-01-udr0",
             "nic1": "asav-01-udr1",
             "nic2": "asav-01-udr2",
@@ -260,7 +260,7 @@
         {
             "comments": "Routing for subnet 1",
             "type": "Microsoft.Network/routeTables",
-            "name": "[variables('UDRName')['nic1']]",
+            "name": "[variables('udrName')['nic1']]",
             "apiVersion": "2016-03-30",
             "location": "[resourceGroup().location]",
             "properties": {
@@ -305,7 +305,7 @@
         {
             "comments": "Routing for subnet 2",
             "type": "Microsoft.Network/routeTables",
-            "name": "[variables('UDRName')['nic2']]",
+            "name": "[variables('udrName')['nic2']]",
             "apiVersion": "2016-03-30",
             "location": "[resourceGroup().location]",
             "properties": {
@@ -350,7 +350,7 @@
         {
             "comments": "Routing table for subnet 3",
             "type": "Microsoft.Network/routeTables",
-            "name": "[variables('UDRName')['nic3']]",
+            "name": "[variables('udrName')['nic3']]",
             "apiVersion": "2016-03-30",
             "location": "[resourceGroup().location]",
             "properties": {
@@ -445,10 +445,9 @@
             },
             "resources": [],
             "dependsOn": [
-                "[variables('UDRName')['nic0']]",
-                "[variables('UDRName')['nic1']]",
-                "[variables('UDRName')['nic2']]",
-                "[variables('UDRName')['nic3']]"
+                "[variables('udrName')['nic1']]",
+                "[variables('udrName')['nic2']]",
+                "[variables('udrName')['nic3']]"
             ]
         }
     ]
