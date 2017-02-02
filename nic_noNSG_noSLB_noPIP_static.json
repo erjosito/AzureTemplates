@@ -47,9 +47,6 @@
                     "dnsServers": []
                 },
                 "enableIPForwarding": true,
-                "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
-                }
             },
             "resources": [],
             "dependsOn": [],

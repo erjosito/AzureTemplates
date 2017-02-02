@@ -29,7 +29,7 @@
     },
     "resources": [
         {
-            "comments": "Generalized from resource: '/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/asatest/providers/Microsoft.Network/publicIPAddresses/asav-publicIP'.",
+            "comments": "Public IP address",
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[parameters('pipName')]",
             "apiVersion": "[variables('apiVersion')]",
@@ -67,13 +67,10 @@
                     "dnsServers": []
                 },
                 "enableIPForwarding": true,
-                "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
-                }
             },
             "resources": [],
             "dependsOn": [
-                "parameters('pipName')"
+                "[parameters('pipName')]"
             ],
         }
     ]
