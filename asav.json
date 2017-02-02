@@ -81,21 +81,20 @@
     },
     "variables": {
         "nicName": {
-            "nic0": "asav-01-nic0",
-            "nic1": "asav-01-nic1",
-            "nic2": "asav-01-nic2",
-            "nic3": "asav-01-Nic3",
+            "nic0": "[concat(parameters('asaName'), '-nic0')]",
+            "nic1": "[concat(parameters('asaName'), '-nic1')]",
+            "nic2": "[concat(parameters('asaName'), '-nic2')]",
+            "nic3": "[concat(parameters('asaName'), '-nic3')]"
         },
         "udrName": {
-            "nic0": "asav-01-udr0",
-            "nic1": "asav-01-udr1",
-            "nic2": "asav-01-udr2",
-            "nic3": "asav-01-udr3",
+            "nic1": "[concat(parameters('asaName'), '-udr1')]",
+            "nic2": "[concat(parameters('asaName'), '-udr2')]",
+            "nic3": "[concat(parameters('asaName'), '-udr3')]"
         }
     },
     "resources": [
         {
-            "comments": "Generalized from resource: '/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/asatest/providers/Microsoft.Compute/virtualMachines/asav-01'.",
+            "comments": "Deploy ASAv",
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('asaName')]",
             "apiVersion": "2015-06-15",
@@ -408,10 +407,7 @@
                     {
                         "name": "subnet0",
                         "properties": {
-                            "addressPrefix": "[parameters('subnet0Prefix')]",
-                            "routeTable": {
-                                "id": "[resourceId('Microsoft.Network/routeTables', variables('UDRName')['nic0'])]"
-                            }
+                            "addressPrefix": "[parameters('subnet0Prefix')]"
                         }
                     },
                     {
