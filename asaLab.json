@@ -50,6 +50,10 @@
             "defaultValue": "subnet3",
             "type": "string"
         },
+        "vnetPrefix": {
+            "defaultValue": "10.0.0.0/16",
+            "type": "string"
+        },
         "subnet0Prefix": {
             "defaultValue": "10.0.0.0/24",
             "type": "string"
@@ -149,6 +153,7 @@
                     "subnet1Name": { "value": "[parameters('subnet1Name')]"},
                     "subnet2Name": { "value": "[parameters('subnet2Name')]"},
                     "subnet3Name": { "value": "[parameters('subnet3Name')]"},
+                    "vnetPrefix": { "value": "[parameters('vnetPrefix')]"},
                     "subnet0Prefix": { "value": "[parameters('subnet0Prefix')]"},
                     "subnet1Prefix": { "value": "[parameters('subnet1Prefix')]"},
                     "subnet2Prefix": { "value": "[parameters('subnet2Prefix')]"},

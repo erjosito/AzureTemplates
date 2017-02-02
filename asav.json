@@ -42,6 +42,10 @@
             "defaultValue": "subnet3",
             "type": "string"
         },
+        "vnetPrefix": {
+            "defaultValue": "10.0.0.0/16",
+            "type": "string"
+        },
         "subnet0Prefix": {
             "defaultValue": "10.0.0.0/24",
             "type": "string"
@@ -362,7 +366,7 @@
                     {
                         "name": "subnet1",
                         "properties": {
-                            "addressPrefix": "[parameters('subnet2Prefix')]",
+                            "addressPrefix": "[parameters('subnet1Prefix')]",
                             "nextHopType": "VirtualAppliance",
                             "nextHopIpAddress": "[parameters('ip3')]"
                         }
@@ -397,7 +401,7 @@
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "10.2.0.0/16"
+                        "[parameters('vnetPrefix')]"
                     ]
                 },
                 "subnets": [
