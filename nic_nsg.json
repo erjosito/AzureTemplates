@@ -72,9 +72,9 @@
                 ]
             },
             "resources": [],
-            "dependsOn": [],
+            "dependsOn": []
         },
-       {
+        {
 			"comments": "NICs created with dynamic IP addresses",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[parameters('nicName')]",

@@ -3,19 +3,18 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vnetName": {
-            "defaultValue": "myVnet",
+            "defaultValue": "asaVnet",
             "type": "string",
             "metadata": { "description": "Name of the vNet that will be created containing the subnets and other objects" }
+        },
+        "vnetPrefix": {
+            "defaultValue": "10.0.0.0/16",
+            "type": "string"
         },
         "storageAccountName": {
             "defaultValue": "[concat('storage',uniqueString(resourceGroup().id))]",
             "type": "string",
             "metadata": { "description": "Name of the storage account used for the VMs. If not specified, a unique ID will be taken" }
-        },
-        "subnet1Name": {
-            "defaultValue": "frontendSubnet",
-            "type": "string",
-            "metadata": { "description": "Name for the first subnet" }
 		},
         "adminUsername": {
             "defaultValue": "jose",
@@ -48,10 +47,6 @@
         },
         "subnet3Name": {
             "defaultValue": "subnet3",
-            "type": "string"
-        },
-        "vnetPrefix": {
-            "defaultValue": "10.0.0.0/16",
             "type": "string"
         },
         "subnet0Prefix": {
@@ -89,8 +84,6 @@
     },
  
     "variables": {
-		"vnetSpace": "10.0.0.0/16",
-		"subnet1Space": "10.0.1.0/24",
 		"apiVersion": "2016-03-30"
 	},
 
@@ -149,6 +142,7 @@
             ]
         },
 		{
+            "comments": "deploy a couple of VMs in one of the subnets",
 			"name": "subnet1VMs",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
@@ -159,11 +153,12 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
-                    "vnetName": { "value": "[concat(parameters('subnet1Name'), '-', parameters('vnetName'))]" },
+                    "vnetName": { "value": "[parameters('vnetName')]" },
                     "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet1Name')]"},
                     "deployLBYesNo": { "value": "no" },
                     "vmCount": { "value": 2 },
+                    "vmPrefix": { "value": "[concat(parameters('subnet1Name'), '-vm-')]" },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": { "value": "[parameters('defaultPwd')]" },
                     "availabilitySetName": { "value": "[concat(parameters('subnet1Name'), '-AvSet')]" }
@@ -175,6 +170,7 @@
             ]
         },
 		{
+            "comments": "deploy a couple of VMs in one of the subnets, wait until the previous works",
 			"name": "subnet2VMs",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
@@ -185,11 +181,12 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
-                    "vnetName": { "value": "[concat(parameters('subnet2Name'), '-', parameters('vnetName'))]" },
+                    "vnetName": { "value": "[parameters('vnetName')]" },
                     "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet2Name')]"},
                     "deployLBYesNo": { "value": "no" },
                     "vmCount": { "value": 2 },
+                    "vmPrefix": { "value": "[concat(parameters('subnet2Name'), '-vm-')]" },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": { "value": "[parameters('defaultPwd')]" },
                     "availabilitySetName": { "value": "[concat(parameters('subnet2Name'), '-AvSet')]" }
@@ -197,7 +194,8 @@
             },
             "dependsOn": [
                 "[parameters('storageAccountName')]",
-                "asa"
+                "asa",
+                "subnet1VMs"
             ]
         }
     ]

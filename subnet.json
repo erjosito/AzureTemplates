@@ -166,16 +166,17 @@
             },
             "resources": [],
             "dependsOn": [
-                "nicCopy",
+                "[concat(variables('nicName'), 'Copy')]",
 				"[parameters('availabilitySetName')]"
             ],
 			"copy": {
-				"name": "vmCopy",
+				"name": "[concat(parameters('vmPrefix'), 'Copy')]",
 				"count": "[parameters('vmCount')]"
 			}
         },
 		{
-			"name": "internalLB",
+			"comments": "Create the internal or external loadbalancer",
+            "name": "internalLB",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
@@ -189,7 +190,7 @@
 		},
 		{
             "comments": "Create all NICs for the VMs",
-			"name": "[concat('nic',copyIndex(1))]",
+			"name": "[concat(variables('nicName'), copyIndex(1))]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
@@ -211,7 +212,7 @@
 				"[parameters('availabilitySetName')]"
             ],
 			"copy": {
-				"name": "nicCopy",
+				"name": "[concat(variables('nicName'), 'Copy')]",
 				"count": "[parameters('vmCount')]"
 			}
         }
