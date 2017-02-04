@@ -112,7 +112,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/asav.json",
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nva_4nic.json",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
