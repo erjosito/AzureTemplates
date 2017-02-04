@@ -19,6 +19,10 @@
             "type": "string",
             "allowedValues": ["asa","csr"]
         },
+        "vmCount": {
+            "defaultValue": 1,
+            "type": "int"
+        },
         "vmName": {
             "defaultValue": "asav-01",
             "type": "string"

@@ -132,10 +132,11 @@
                     "ip2": { "value": "[parameters('ip2')]"},
                     "ip3": { "value": "[parameters('ip3')]"},
                     "pipName": { "value": "[parameters('pipName')]"},
-                    "vmType": { "value": "asa" },
+                    "vmType": { "value": "csr" },
+                    "vmCount": { "value": 1 },
                     "vmUsr": { "value": "[parameters('adminUsername')]" },
                     "vmPwd": { "value": "[parameters('defaultPwd')]" },
-                    "vmName": { "value": "asav-01" }
+                    "vmName": { "value": "csr" }
                 }
             },
             "dependsOn": [
