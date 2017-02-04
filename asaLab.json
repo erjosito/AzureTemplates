@@ -66,20 +66,24 @@
             "type": "string"
         },
         "ip0": {
-            "defaultValue": "10.0.0.101",
-            "type": "string"
+            "defaultValue": "10.0.0.10",
+            "type": "string",
+            "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
         },
         "ip1": {
-            "defaultValue": "10.0.1.101",
-            "type": "string"
+            "defaultValue": "10.0.1.10",
+            "type": "string",
+            "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
         },
         "ip2": {
-            "defaultValue": "10.0.2.101",
-            "type": "string"
+            "defaultValue": "10.0.2.10",
+            "type": "string",
+            "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
         },
         "ip3": {
-            "defaultValue": "10.0.3.101",
-            "type": "string"
+            "defaultValue": "10.0.3.10",
+            "type": "string",
+            "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
         }
     },
  

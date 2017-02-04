@@ -93,12 +93,6 @@
         }
     },
     "variables": {
-        "nicName": {
-            "nic0": "[concat(parameters('vmName'), '-nic0')]",
-            "nic1": "[concat(parameters('vmName'), '-nic1')]",
-            "nic2": "[concat(parameters('vmName'), '-nic2')]",
-            "nic3": "[concat(parameters('vmName'), '-nic3')]"
-        },
         "udrName": {
             "nic1": "[concat(parameters('vmName'), '-udr1')]",
             "nic2": "[concat(parameters('vmName'), '-udr2')]",
@@ -126,7 +120,7 @@
         {
             "comments": "Deploy Virtual Network Appliance",
             "type": "Microsoft.Compute/virtualMachines",
-            "name": "[parameters('vmName')]",
+            "name": "[concat(parameters('vmName'), '-', copyIndex(1))]",
             "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
             "plan": {
@@ -167,25 +161,25 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName')['nic0'])]",
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'), '-', copyIndex(1), '-nic0'))]",
                             "properties": {
                                 "primary": true
                             }
                         },
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName')['nic1'])]",
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'), '-', copyIndex(1), '-nic1'))]",
                             "properties": {
                                 "primary": false
                             }
                         },
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName')['nic2'])]",
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'), '-', copyIndex(1), '-nic2'))]",
                             "properties": {
                                 "primary": false
                             }
                         },
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName')['nic3'])]",
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'), '-', copyIndex(1), '-nic3'))]",
                             "properties": {
                                 "primary": false
                             }
@@ -194,15 +188,19 @@
                 }
             },
             "resources": [],
+            "copy": {
+                "name": "[parameters('vmName')]",
+                "count": "[parameters('vmCount')]"
+            },
             "dependsOn": [
-                "[variables('nicName')['nic0']]",
-                "[variables('nicName')['nic1']]",
-                "[variables('nicName')['nic2']]",
-                "[variables('nicName')['nic3']]"
+                "[concat(parameters('vmName'), '-nic0')]",
+                "[concat(parameters('vmName'), '-nic1')]",
+                "[concat(parameters('vmName'), '-nic2')]",
+                "[concat(parameters('vmName'), '-nic3')]"
             ]
         },
 		{
-			"name": "[variables('nicName')['nic0']]",
+			"name": "[concat(parameters('vmName'), '-', copyIndex(1), '-nic0')]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
@@ -212,8 +210,8 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
-                    "nicName": {"value": "[variables('nicName')['nic0']]"},
-                    "ipAddress": { "value": "[parameters('ip0')]" },                    
+                    "nicName": {"value": "[concat(parameters('vmName'), '-', copyIndex(1), '-nic0')]"},
+                    "ipAddress": { "value": "[concat(parameters('ip0'), copyIndex(1))]" },                    
                     "vnetName": { "value": "[parameters('vnetName')]" },
                     "subnetName": { "value": "[parameters('subnet0Name')]"},
                     "pipName": { "value": "[parameters('pipName')]" }
@@ -221,10 +219,14 @@
             },
             "dependsOn": [
                 "[parameters('vnetName')]"  
-            ]
+            ],
+            "copy": {
+                "name": "[concat(parameters('vmName'), '-nic0')]",
+                "count": "[parameters('vmCount')]"
+            }
         },
 		{
-			"name": "[variables('nicName')['nic1']]",
+			"name": "[concat(parameters('vmName'), '-', copyIndex(1), '-nic1')]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
@@ -234,18 +236,22 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
-                    "nicName": {"value": "[variables('nicName')['nic1']]"},
-                    "ipAddress": { "value": "[parameters('ip1')]" },                    
+                    "nicName": {"value": "[concat(parameters('vmName'), '-', copyIndex(1), '-nic1')]"},
+                    "ipAddress": { "value": "[concat(parameters('ip1'), copyIndex(1))]" },                    
                     "vnetName": { "value": "[parameters('vnetName')]" },
                     "subnetName": { "value": "[parameters('subnet1Name')]"}
                 }
             },
             "dependsOn": [
                 "[parameters('vnetName')]"
-            ]
+            ],
+            "copy": {
+                "name": "[concat(parameters('vmName'), '-nic1')]",
+                "count": "[parameters('vmCount')]"
+            }
         },
 		{
-			"name": "[variables('nicName')['nic2']]",
+			"name": "[concat(parameters('vmName'), '-', copyIndex(1), '-nic2')]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
@@ -255,18 +261,22 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
-                    "nicName": {"value": "[variables('nicName')['nic2']]"},
-                    "ipAddress": { "value": "[parameters('ip2')]" },                    
+                    "nicName": {"value": "[concat(parameters('vmName'), '-', copyIndex(1), '-nic2')]"},
+                    "ipAddress": { "value": "[concat(parameters('ip2'), copyIndex(1))]" },                    
                     "vnetName": { "value": "[parameters('vnetName')]" },
                     "subnetName": { "value": "[parameters('subnet2Name')]"}
                 }
             },
             "dependsOn": [
                 "[parameters('vnetName')]"
-            ]
+            ],
+            "copy": {
+                "name": "[concat(parameters('vmName'), '-nic2')]",
+                "count": "[parameters('vmCount')]"
+            }
         },
 		{
-			"name": "[variables('nicName')['nic3']]",
+			"name": "[concat(parameters('vmName'), '-', copyIndex(1), '-nic3')]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
@@ -276,15 +286,19 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
-                    "nicName": {"value": "[variables('nicName')['nic3']]"},
-                    "ipAddress": { "value": "[parameters('ip3')]" },                    
+                    "nicName": {"value": "[concat(parameters('vmName'), '-', copyIndex(1), '-nic3')]"},
+                    "ipAddress": { "value": "[concat(parameters('ip3'), copyIndex(1))]" },                    
                     "vnetName": { "value": "[parameters('vnetName')]" },
                     "subnetName": { "value": "[parameters('subnet3Name')]"}
                 }
             },
             "dependsOn": [
                 "[parameters('vnetName')]"
-            ]
+            ],
+            "copy": {
+                "name": "[concat(parameters('vmName'), '-nic3')]",
+                "count": "[parameters('vmCount')]"
+            }
         },
         {
             "comments": "Routing for subnet 1",
