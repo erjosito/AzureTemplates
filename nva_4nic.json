@@ -108,7 +108,7 @@
             },
             "csr": {
                 "planName": "csr-azure-byol",
-                "product": "cisco-csr-100v",
+                "product": "cisco-csr-1000v",
                 "publisher": "cisco",
                 "sku": "csr-azure-byol",
                 "vmSize": "Standard_D3_v2"
