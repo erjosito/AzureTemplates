@@ -14,15 +14,20 @@
             "defaultValue": "asatestjoselito",
             "type": "string"
         },
-        "asaName": {
+        "vmType": {
+            "defaultValue": "asa",
+            "type": "string",
+            "allowedValues": ["asa","csr"]
+        },
+        "vmName": {
             "defaultValue": "asav-01",
             "type": "string"
         },
-        "asaUsr": {
+        "vmUsr": {
             "defaultValue": "myadmin",
             "type": "string"
         },
-        "asaPwd": {
+        "vmPwd": {
             "defaultValue": null,
             "type": "securestring"
         },
@@ -85,42 +90,59 @@
     },
     "variables": {
         "nicName": {
-            "nic0": "[concat(parameters('asaName'), '-nic0')]",
-            "nic1": "[concat(parameters('asaName'), '-nic1')]",
-            "nic2": "[concat(parameters('asaName'), '-nic2')]",
-            "nic3": "[concat(parameters('asaName'), '-nic3')]"
+            "nic0": "[concat(parameters('vmName'), '-nic0')]",
+            "nic1": "[concat(parameters('vmName'), '-nic1')]",
+            "nic2": "[concat(parameters('vmName'), '-nic2')]",
+            "nic3": "[concat(parameters('vmName'), '-nic3')]"
         },
         "udrName": {
-            "nic1": "[concat(parameters('asaName'), '-udr1')]",
-            "nic2": "[concat(parameters('asaName'), '-udr2')]",
-            "nic3": "[concat(parameters('asaName'), '-udr3')]"
-        }
+            "nic1": "[concat(parameters('vmName'), '-udr1')]",
+            "nic2": "[concat(parameters('vmName'), '-udr2')]",
+            "nic3": "[concat(parameters('vmName'), '-udr3')]"
+        },
+        "settingsTable": {
+            "asa": {
+                "planName": "asav-azure-byol",
+                "product": "cisco-asav",
+                "publisher": "cisco",
+                "sku": "asav-azure-byol",
+                "vmSize": "Standard_D3_v2"
+            },
+            "csr": {
+                "planName": "csr-azure-byol",
+                "product": "cisco-csr-100v",
+                "publisher": "cisco",
+                "sku": "csr-azure-byol",
+                "vmSize": "Standard_D3_v2"
+            }
+        },
+        "settings": "[variables('settingsTable')[parameters('vmType')]]"
     },
     "resources": [
         {
-            "comments": "Deploy ASAv",
+            "comments": "Deploy Virtual Network Appliance",
             "type": "Microsoft.Compute/virtualMachines",
-            "name": "[parameters('asaName')]",
+            "name": "[parameters('vmName')]",
             "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
             "plan": {
-                "name": "asav-azure-byol",
-                "product": "cisco-asav",
-                "publisher": "cisco"
+                "name": "[variables('settings')['planName']]",
+                "product": "[variables('settings')['product']]",
+                "publisher": "[variables('settings')['publisher']]"
             },
             "properties": {
                 "hardwareProfile": {
-                    "vmSize": "Standard_D3_v2"
+                    "vmSize": "[variables('settings')['vmSize']]"
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "publisher": "cisco",
-                        "offer": "cisco-asav",
-                        "sku": "asav-azure-byol",
+                        "publisher": "[variables('settings')['publisher']]",
+                        "offer": "[variables('settings')['product']]",
+                        "sku": "[variables('settings')['sku']]",
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "[concat(parameters('asaName'),'-disk')]",
+                        "name": "[concat(parameters('vmName'),'-disk')]",
                         "createOption": "FromImage",
                         "vhd": {
                             "uri": "[concat('http', '://', parameters('storageAccountName'), '.blob.core.windows.net', concat('/vhds/', parameters('asaName'),'-disk.vhd'))]"
@@ -130,13 +152,13 @@
                     "dataDisks": []
                 },
                 "osProfile": {
-                    "computerName": "[parameters('asaName')]",
-                    "adminUsername": "[parameters('asaUsr')]",
+                    "computerName": "[parameters('vmName')]",
+                    "adminUsername": "[parameters('vmUsr')]",
                     "linuxConfiguration": {
                         "disablePasswordAuthentication": false
                     },
                     "secrets": [],
-                    "adminPassword": "[parameters('asaPwd')]"
+                    "adminPassword": "[parameters('vmPwd')]"
                 },
                 "networkProfile": {
                     "networkInterfaces": [
