@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+            "vnaType": { "value": "asa"},
+            "vnaCount": { "value": 1},
+            "vnaName": { "value": "asav"},
+            "subnet1VmCount": { "value": 2},
+            "subnet2VmCount": { "value": 2},
+            "defaultPwd": {
+                "reference": {
+                    "keyVault": {
+                        "id": "/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/PermanentLab/providers/Microsoft.KeyVault/vaults/erjosito"
+                    },
+                    "secretName": "defaultPwd"
+                }
+            }
+    }
+}

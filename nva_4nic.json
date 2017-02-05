@@ -76,23 +76,33 @@
             "type": "string"
         },
         "ip0": {
-            "defaultValue": "10.0.0.101",
-            "type": "string"
+            "defaultValue": "10.0.0.10",
+            "type": "string",
+            "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
         },
         "ip1": {
-            "defaultValue": "10.0.1.101",
-            "type": "string"
+            "defaultValue": "10.0.1.10",
+            "type": "string",
+            "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
         },
         "ip2": {
-            "defaultValue": "10.0.2.101",
-            "type": "string"
+            "defaultValue": "10.0.2.10",
+            "type": "string",
+            "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
         },
         "ip3": {
-            "defaultValue": "10.0.3.101",
-            "type": "string"
+            "defaultValue": "10.0.3.10",
+            "type": "string",
+            "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
         }
     },
     "variables": {
+        "defaultGw": {
+            "nic0": "[concat(parameters('ip0'), '1')]",
+            "nic1": "[concat(parameters('ip1'), '1')]",
+            "nic2": "[concat(parameters('ip2'), '1')]",
+            "nic3": "[concat(parameters('ip3'), '1')]"
+        },
         "udrName": {
             "nic1": "[concat(parameters('vmName'), '-udr1')]",
             "nic2": "[concat(parameters('vmName'), '-udr2')]",
@@ -313,7 +323,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnet0Prefix')]",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip1')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic1']]"
                         }
                     },
                     {
@@ -321,7 +331,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnet2Prefix')]",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip1')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic1']]"
                         }
                     },
                     {
@@ -329,7 +339,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnet3Prefix')]",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip1')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic1']]"
                         }
                     },
                     {
@@ -337,7 +347,7 @@
                         "properties": {
                             "addressPrefix": "0.0.0.0/0",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip1')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic1']]"
                         }
                     }
                 ]
@@ -358,7 +368,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnet0Prefix')]",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip2')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic2']]"
                         }
                     },
                     {
@@ -366,7 +376,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnet1Prefix')]",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip2')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic2']]"
                         }
                     },
                     {
@@ -374,7 +384,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnet3Prefix')]",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip2')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic2']]"
                         }
                     },
                     {
@@ -382,7 +392,7 @@
                         "properties": {
                             "addressPrefix": "0.0.0.0/0",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip2')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic2']]"
                         }
                     }
                 ]
@@ -403,7 +413,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnet0Prefix')]",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip3')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic3']]"
                         }
                     },
                     {
@@ -411,7 +421,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnet1Prefix')]",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip3')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic3']]"
                         }
                     },
                     {
@@ -419,7 +429,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnet2Prefix')]",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip3')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic3']]"
                         }
                     },
                     {
@@ -427,7 +437,7 @@
                         "properties": {
                             "addressPrefix": "0.0.0.0/0",
                             "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('ip3')]"
+                            "nextHopIpAddress": "[variables('defaultGw')['nic3']]"
                         }
                     }
                 ]

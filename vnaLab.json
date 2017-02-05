@@ -21,9 +21,26 @@
             "type": "string",
             "metadata": { "description": "Name for the second subnet" }
 		},
-        "asaName": {
-            "defaultValue": "asav-01",
+        "vnaName": {
+            "defaultValue": "asav",
             "type": "string"
+        },
+        "vnaType": {
+            "defaultValue": "asav",
+            "type": "string",
+            "metadata": { "description": "Can be either 'asa' or 'csr'" }
+        },
+        "vnaCount": {
+            "defaultValue": 1,
+            "type": "int"
+        },
+        "subnet1VmCount": {
+            "defaultValue": 1,
+            "type": "int"
+        },
+        "subnet2VmCount": {
+            "defaultValue": 1,
+            "type": "int"
         },
         "defaultPwd": {
             "defaultValue": null,
@@ -136,11 +153,11 @@
                     "ip2": { "value": "[parameters('ip2')]"},
                     "ip3": { "value": "[parameters('ip3')]"},
                     "pipName": { "value": "[parameters('pipName')]"},
-                    "vmType": { "value": "csr" },
-                    "vmCount": { "value": 1 },
+                    "vmType": { "value": "[parameters('vnaType')]" },
+                    "vmCount": { "value": "[parameters('vnaCount')]" },
                     "vmUsr": { "value": "[parameters('adminUsername')]" },
                     "vmPwd": { "value": "[parameters('defaultPwd')]" },
-                    "vmName": { "value": "csr" }
+                    "vmName": { "value": "[parameters('vnaName')]" }
                 }
             },
             "dependsOn": [
@@ -163,7 +180,7 @@
                     "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet1Name')]"},
                     "deployLBYesNo": { "value": "no" },
-                    "vmCount": { "value": 2 },
+                    "vmCount": { "value": "[parameters('subnet1VmCount')]" },
                     "vmPrefix": { "value": "[concat(parameters('subnet1Name'), '-vm-')]" },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": { "value": "[parameters('defaultPwd')]" },
@@ -191,7 +208,7 @@
                     "storageAccountName": { "value": "[parameters('storageAccountName')]" },
                     "subnetName": { "value": "[parameters('subnet2Name')]"},
                     "deployLBYesNo": { "value": "no" },
-                    "vmCount": { "value": 2 },
+                    "vmCount": { "value": "[parameters('subnet2VmCount')]" },
                     "vmPrefix": { "value": "[concat(parameters('subnet2Name'), '-vm-')]" },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": { "value": "[parameters('defaultPwd')]" },
