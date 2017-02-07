@@ -61,15 +61,23 @@
                         }
                     },
                     {
-                        "name": "[concat(parameters('subnetNamePrefix'), copyIndex(1))]",
+                        "name": "[concat(parameters('subnetNamePrefix'), '1')]",
                         "properties": {
-                            "addressPrefix": "[concat(parameters('vnetOctets12'), copyIndex(1), '.0/24')]"
+                            "addressPrefix": "[concat(parameters('vnetOctets12'), '1.0/24')]"
                         },
-                        "copy": {
-                            "name": "[concat(parameters('vnetName'), 'SubnetCopy')]",
-                            "count": "[parameters('subnetCount')]"
-                        }
                     },
+                    {
+                        "name": "[concat(parameters('subnetNamePrefix'), '2')]",
+                        "properties": {
+                            "addressPrefix": "[concat(parameters('vnetOctets12'), '2.0/24')]"
+                        },
+                    },
+                    {
+                        "name": "[concat(parameters('subnetNamePrefix'), '3')]",
+                        "properties": {
+                            "addressPrefix": "[concat(parameters('vnetOctets12'), '3.0/24')]"
+                        },
+                    }
                 ]
             },
             "resources": [],
