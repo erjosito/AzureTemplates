@@ -41,7 +41,7 @@
     },
     "resources": [
         {
-            "comments": "Create Vnet without subnet",
+            "comments": "Create Vnet without subnets",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('vnetName')]",
             "apiVersion": "[variables('apiVersion')]",
@@ -106,14 +106,14 @@
                 "dependsOn": [
                     "[parameters('gwPIPName')]",
                     "[parameters('vnetName')]"
-                ],
+                ]
             }
         },
         {
             "comments": "Create the non-gateway subnets, where VMs will be deployed",
             "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/virtualNetworks/subnets",
-            "name": "[concat(parameters('vnetName'), '/', parameters('vnetName'), '-', parameters('subnetNamePrefix'), copyIndex(1))]",
+            "name": "[concat(parameters('vnetName'), '/', parameters('subnetNamePrefix'), copyIndex(1))]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "addressPrefix": "[concat(parameters('vnetOctets12'), copyIndex(1), '.0/24')]"
