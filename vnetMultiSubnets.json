@@ -92,7 +92,7 @@
                     "properties": {
                     "privateIPAllocationMethod": "Dynamic",
                     "subnet": {
-                        "id": "resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('vnetName'), '-gwSubnet'))]"
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('vnetName'), '-gwSubnet')]"
                     },
                     "publicIPAddress": {
                         "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('gwPIPName'))]"
