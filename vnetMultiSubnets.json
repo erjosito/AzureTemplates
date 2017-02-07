@@ -34,7 +34,7 @@
             "defaultValue": "myGwPIP",
             "type": "string",
             "metadata": { "description": "Public IP address for the VPN gateway"}
-        },
+        }
     },
     "variables": {
         "apiVersion": "2016-03-30",
@@ -124,7 +124,8 @@
                 "count": "[parameters('subnetCount')]"
             },
             "dependsOn": [
-                "[parameters('vnetName')]"
+                "[parameters('vnetName')]",
+                "[concat(parameters('vnetName'), '/', parameters('vnetName'), '-gwSubnet')]"
             ]
         }
     ]

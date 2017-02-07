@@ -86,7 +86,8 @@
                     "vnetOctets12": { "value": "[concat(parameters('vnetOctet1'), copyIndex(1), '.')]" },
                     "subnetNamePrefix": { "value": "[concat(parameters('vnetOctet1'), '-Subnet')]"},
                     "gwName": { "value": "[concat(parameters('vnetNamePrefix'), 'GW')]" },
-                    "gwPIPName": { "value": "[concat(parameters('vnetNamePrefix'), 'GWPIP')]" }
+                    "gwPIPName": { "value": "[concat(parameters('vnetNamePrefix'), 'GWPIP')]" },
+                    "subnetCount": {"value": "[parameters('subnetCount')]"}
                 }
             },
             "dependsOn": [

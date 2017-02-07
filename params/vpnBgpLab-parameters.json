@@ -3,6 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
             "vnetCount": { "value": 3},
+            "subnetCount": { "value": 2},
             "subnet1VmCount": { "value": 2},
             "subnet2VmCount": { "value": 2},
             "defaultPwd": {
