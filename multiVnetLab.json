@@ -46,7 +46,7 @@
             "defaultValue": null,
             "type": "securestring",
             "metadata": { "description": "Password for the VMs"}
-        },
+        }
     },
  
     "variables": {
@@ -72,13 +72,13 @@
         },
 		{
 			"comments": "vnet with subnets",
-			"name": "asa",
+			"name": "[concat(parameters('vnetNamePrefix'), '-template-', copyIndex(1))]",
             "type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/vnetMultiSubnet",
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/vnetMultiSubnets.json",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
@@ -86,8 +86,7 @@
                     "vnetOctets12": { "value": "[concat(parameters('vnetOctet1'), copyIndex(1), '.')]" },
                     "subnetNamePrefix": { "value": "[concat(parameters('vnetOctet1'), '-Subnet')]"},
                     "gwName": { "value": "[concat(parameters('vnetNamePrefix'), 'GW')]" },
-                    "gwPIPName": { "value": "[concat(parameters('vnetNamePrefix'), 'GWPIP')]" },
-                    "subnetCount": "[parameters('subnetCount')]"
+                    "gwPIPName": { "value": "[concat(parameters('vnetNamePrefix'), 'GWPIP')]" }
                 }
             },
             "dependsOn": [

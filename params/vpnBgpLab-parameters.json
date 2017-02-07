@@ -2,9 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-            "vnaType": { "value": "asa"},
-            "vnaCount": { "value": 1},
-            "vnaName": { "value": "asav"},
+            "vnetCount": { "value": 3},
             "subnet1VmCount": { "value": 2},
             "subnet2VmCount": { "value": 2},
             "defaultPwd": {

@@ -7,7 +7,8 @@
             "type": "string"
         },
         "vnetOctets12": {
-            "defaultValue": "10.0."
+            "defaultValue": "10.0.",
+            "type": "string"
         },
         "subnetNamePrefix": {
             "defaultValue": "subnet",
