@@ -61,7 +61,7 @@
             "comments": "Create the gateway subnet",
             "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/virtualNetworks/subnets",
-            "name": "[concat(parameters('vnetName'), '/', parameters('vnetName'), '-gwSubnet')]",
+            "name": "[concat(parameters('vnetName'), '/', 'GatewaySubnet')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "addressPrefix": "[concat(parameters('vnetOctets12'), '0.0/24')]"
