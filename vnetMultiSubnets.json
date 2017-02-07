@@ -97,7 +97,7 @@
                     "properties": {
                     "privateIPAllocationMethod": "Dynamic",
                     "subnet": {
-                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('vnetName'), '-gwSubnet')]"
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', 'GatewaySubnet')]"
                     },
                     "publicIPAddress": {
                         "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('gwPIPName'))]"
