@@ -64,19 +64,19 @@
                         "name": "[concat(parameters('subnetNamePrefix'), '1')]",
                         "properties": {
                             "addressPrefix": "[concat(parameters('vnetOctets12'), '1.0/24')]"
-                        },
+                        }
                     },
                     {
                         "name": "[concat(parameters('subnetNamePrefix'), '2')]",
                         "properties": {
                             "addressPrefix": "[concat(parameters('vnetOctets12'), '2.0/24')]"
-                        },
+                        }
                     },
                     {
                         "name": "[concat(parameters('subnetNamePrefix'), '3')]",
                         "properties": {
                             "addressPrefix": "[concat(parameters('vnetOctets12'), '3.0/24')]"
-                        },
+                        }
                     }
                 ]
             },
@@ -94,7 +94,7 @@
             }
         },
         {
-            "comments": "Create gateway",
+            "comments": "Create VPN gateway",
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/virtualNetworkGateways",
             "name": "[parameters('gwName')]",
@@ -118,8 +118,6 @@
                 "vpnType": "RouteBased",
                 "enableBgp": false,
                 "dependsOn": [
-                    "[parameters('gwPIPName')]",
-                    "[parameters('vnetName')]"
                 ]
             }
         }
