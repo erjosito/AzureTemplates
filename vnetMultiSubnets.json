@@ -125,7 +125,7 @@
             },
             "dependsOn": [
                 "[parameters('vnetName')]",
-                "[concat(parameters('vnetName'), '/', parameters('vnetName'), '-gwSubnet')]"
+                "[concat(parameters('vnetName'), '/', 'GatewaySubnet')]"
             ]
         }
     ]
