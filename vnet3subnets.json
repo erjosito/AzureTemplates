@@ -31,9 +31,9 @@
             "metadata": { "description": "Public IP address for the VPN gateway"}
         },
         "createGw": {
-            "allowedValues": ["yes", "no" ],
             "defaultValue": "no",
-            "type": "string"
+            "type": "string",
+            "allowedValues": ["yes", "no"]
         }
     },
     "variables": {
@@ -50,7 +50,8 @@
                 "gwName": { "value": "[parameters('gwName')]" },
                 "PIPName": { "value": "[parameters('gwPIPName')]" }
             },
-            "no": {}
+            "no": {
+            }
         },
         "gwTemplateParam": "[variables('gwTemplateUriTable')[parameters('createGw')]]"
     },

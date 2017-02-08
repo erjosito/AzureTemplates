@@ -23,9 +23,9 @@
             "metadata": { "description": "Number of identical vnets that will be created"}
         },
         "createGw": {
-            "allowedValues": ["yes", "no" ],
             "defaultValue": "no",
-            "type": "string"
+            "type": "string",
+            "allowedValues": ["yes", "no"]
         },
         "subnetCount": {
             "defaultValue": 2,
@@ -83,7 +83,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/vnetMultiSubnets.json",
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/vnet3subnets.json",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters":  {
