@@ -92,7 +92,7 @@
                     "subnetNamePrefix": { "value": "[concat(parameters('vnetNamePrefix'), copyIndex(1), 'Subnet')]"},
                     "gwName": { "value": "[concat(parameters('vnetNamePrefix'), copyIndex(1), 'GW')]" },
                     "gwPIPName": { "value": "[concat(parameters('vnetNamePrefix'), copyIndex(1), 'GWPIP')]" },
-                    "createGw": { "value": "parameters('createGw')]"}
+                    "createGw": { "value": "[parameters('createGw')]"}
                 }
             },
             "dependsOn": [

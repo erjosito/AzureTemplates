@@ -110,7 +110,7 @@
         },
 		{
 			"comments": "Optionally create VPN gateway",
-			"name": "[concat(parameters('vnetName'), '-template-', copyIndex(1))]",
+			"name": "[concat(parameters('vnetName'), 'VpnGw')]",
             "type": "Microsoft.Resources/deployments",
 			"apiVersion": "[variables('apiVersion')]",
 			"properties": {
