@@ -122,8 +122,8 @@
 				"parameters": "[variables('gwTemplateParam')]"
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', parameters('gwPIPName'))]",
-                "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"                
+                "[parameters('gwPIPName')]",
+                "[parameters('vnetName')]"                
             ]
         }
     ]
