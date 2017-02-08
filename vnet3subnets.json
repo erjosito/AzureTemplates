@@ -7,16 +7,12 @@
             "type": "string"
         },
         "vnetOctets12": {
-            "defaultValue": "10.0."
-        },
-        "subnetNamePrefix": {
-            "defaultValue": "subnet",
+            "defaultValue": "10.0.",
             "type": "string"
         },
-        "subnetCount": {
-            "defaultValue": 2,
-            "type": "int",
-            "metadata": { "description": "Number of subnets IN ADDITION to the gateway subnet"}
+        "subnetNamePrefix": {
+            "defaultValue": "Subnet",
+            "type": "string"
         },
         "gwName": {
             "defaultValue": "myGw",
@@ -34,40 +30,72 @@
             "type": "string",
             "metadata": { "description": "Public IP address for the VPN gateway"}
         },
+        "createGw": {
+            "allowedValues": ["yes", "no" ],
+            "defaultValue": "no",
+            "type": "string"
+        }
     },
     "variables": {
         "apiVersion": "2016-03-30",
-        "vnetSpace": "[concat(parameters('vnetOctets12'), '0.0/16')]"
+        "vnetSpace": "[concat(parameters('vnetOctets12'), '0.0/16')]",
+        "gwTemplateUriTable": {
+            "yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/vpnGw.json",
+            "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
+        },
+        "gwTemplateUri": "[variables('gwTemplateUriTable')[parameters('createGw')]]",
+        "gwTemplateParamTable": {
+            "yes": {
+                "vnetName": { "value": "[parameters('vnetName')]" },
+                "gwName": { "value": "[parameters('gwName')]" },
+                "PIPName": { "value": "[parameters('gwPIPName')]" }
+            },
+            "no": {}
+        },
+        "gwTemplateParam": "[variables('gwTemplateUriTable')[parameters('createGw')]]"
     },
     "resources": [
         {
-            "comments": "Create Vnet without subnet",
+            "comments": "Create Vnet",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('vnetName')]",
             "apiVersion": "[variables('apiVersion')]",
-            "location": "resourceGroup().location",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
                         "[variables('vnetSpace')]"
                     ]
-                }
+                },
+                "subnets": [
+                    {
+                        "name": "GatewaySubnet",
+                        "properties": {
+                            "addressPrefix": "[concat(parameters('vnetOctets12'), '0.0/24')]"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('subnetNamePrefix'), '1')]",
+                        "properties": {
+                            "addressPrefix": "[concat(parameters('vnetOctets12'), '1.0/24')]"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('subnetNamePrefix'), '2')]",
+                        "properties": {
+                            "addressPrefix": "[concat(parameters('vnetOctets12'), '2.0/24')]"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('subnetNamePrefix'), '3')]",
+                        "properties": {
+                            "addressPrefix": "[concat(parameters('vnetOctets12'), '3.0/24')]"
+                        }
+                    }
+                ]
             },
             "resources": [],
             "dependsOn": []
-        },
-        {
-            "comments": "Create the gateway subnet",
-            "apiVersion": "[variables('apiVersion')]",
-            "type": "Microsoft.Network/virtualNetworks/subnets",
-            "name": "[concat(parameters('vnetName'), '/', parameters('vnetName'), '-gwSubnet')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "addressPrefix": "[concat(parameters('vnetOctets12'), '0.0/24')]"
-            },
-            "dependsOn": [
-                "[parameters('vnetName')]"
-            ]
         },
         {
             "comments": "Create public IP address for the VPN gateway",
@@ -79,51 +107,22 @@
                 "publicIPAllocationMethod": "Dynamic"
             }
         },
-        {
-            "comments": "Create gateway",
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/virtualNetworkGateways",
-            "name": "[parameters('gwName')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "ipConfigurations": [
-                {
-                    "properties": {
-                    "privateIPAllocationMethod": "Dynamic",
-                    "subnet": {
-                        "id": "resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('vnetName'), '-gwSubnet'))]"
-                    },
-                    "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('gwPIPName'))]"
-                    }
-                    },
-                    "name": "[concat(parameters('vnetName'), 'vnetGwConfig')]"
-                }
-                ],
-                "gatewayType": "Vpn",
-                "vpnType": "RouteBased",
-                "enableBgp": false,
-                "dependsOn": [
-                    "[parameters('gwPIPName')]",
-                    "[parameters('vnetName')]"
-                ],
-            }
-        },
-        {
-            "comments": "Create the non-gateway subnets, where VMs will be deployed",
-            "apiVersion": "[variables('apiVersion')]",
-            "type": "Microsoft.Network/virtualNetworks/subnets",
-            "name": "[concat(parameters('vnetName'), '/', parameters('vnetName'), '-', parameters('subnetNamePrefix'), copyIndex(1))]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "addressPrefix": "[concat(parameters('vnetOctets12'), copyIndex(1), '.0/24')]"
-            },
-            "copy": {
-                "name": "[concat(parameters('vnetName'), '-subnetCopy')]",
-                "count": "[parameters('subnetCount')]"
+		{
+			"comments": "Optionally create VPN gateway",
+			"name": "[concat(parameters('vnetName'), '-template-', copyIndex(1))]",
+            "type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('gwTemplateUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": "[variables('gwTemplateParam')]"
             },
             "dependsOn": [
-                "[parameters('vnetName')]"
+                "[concat('Microsoft.Network/publicIPAddresses/', parameters('gwPIPName'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"                
             ]
         }
     ]
