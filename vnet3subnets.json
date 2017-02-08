@@ -53,7 +53,7 @@
             "no": {
             }
         },
-        "gwTemplateParam": "[variables('gwTemplateUriTable')[parameters('createGw')]]"
+        "gwTemplateParam": "[variables('gwTemplateParamTable')[parameters('createGw')]]"
     },
     "resources": [
         {
