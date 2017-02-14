@@ -60,8 +60,6 @@
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "properties": {
-				"availabilitySet": {
-				},
 				"hardwareProfile": {
                     "vmSize": "[variables('skuData')['size']]"
                 },
