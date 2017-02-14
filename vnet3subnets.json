@@ -78,11 +78,9 @@
                 "vmName": { "value": "[variables('vmName')]" },
                 "vnetName": { "value": "[parameters('vnetName')]" },
                 "subnetName": { "value": "[concat(parameters('subnetNamePrefix'), '1')]" },
-                "vnetName": { "value": "ubuntu" },
+                "vmType": { "value": "ubuntu" },
                 "adminUsername": { "value": "[parameters('adminUsername')]" },
-                "adminPassword": { "value": "[parameters('adminPassword')]" },
-
-                
+                "adminPassword": { "value": "[parameters('adminPassword')]" }
             },
             "no": {
             }
