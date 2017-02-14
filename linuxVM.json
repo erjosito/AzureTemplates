@@ -81,7 +81,7 @@
                     "dataDisks": []
                 },
                 "osProfile": {
-                    "computerName": "parameters('vmName')]",
+                    "computerName": "[parameters('vmName')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "secrets": [],
                     "adminPassword": "[parameters('adminPassword')]"
