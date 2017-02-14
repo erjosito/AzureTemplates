@@ -67,6 +67,19 @@
             }
         },
         "gwTemplateParam": "[variables('gwTemplateParamTable')[parameters('createGw')]]",
+        "gwPipUriTable": {
+            "yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/pipDynamic.json",
+            "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
+        },
+        "gwPipUri": "[variables('gwPipUriTable')[parameters('createGw')]]",
+        "gwPipParamTable": {
+            "yes": {
+                "pipName": { "value": "[parameters('gwPIPName')]" }
+            },
+            "no": {
+            }
+        },
+        "gwPipParam": "[variables('gwPipParamTable')[parameters('createGw')]]",
         "vmTemplateUriTable": {
             "yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/linuxVM.json",
             "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
@@ -130,15 +143,22 @@
             "resources": [],
             "dependsOn": []
         },
-        {
-            "comments": "Create public IP address for the VPN gateway, actually only used if createGw is True",
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[parameters('gwPIPName')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "publicIPAllocationMethod": "Dynamic"
-            }
+		{
+			"comments": "Optionally create a public IP address",
+			"name": "[parameters('gwPIPName')]",
+            "type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-09-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('gwPipUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": "[variables('gwPipParam')]"
+            },
+            "dependsOn": [
+                "[parameters('vnetName')]"                
+            ]
         },
 		{
 			"comments": "Optionally create VPN gateway",
