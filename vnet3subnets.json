@@ -34,6 +34,19 @@
             "defaultValue": "no",
             "type": "string",
             "allowedValues": ["yes", "no"]
+        },
+        "createVm": {
+            "defaultValue": "no",
+            "type": "string",
+            "allowedValues": ["yes", "no"]
+        },
+        "adminUsername": {
+            "defaultValue": null,
+            "type": "string"
+        },
+        "adminPassword": {
+            "defaultValue": null,
+            "type": "securestring"
         }
     },
     "variables": {
@@ -53,11 +66,32 @@
             "no": {
             }
         },
-        "gwTemplateParam": "[variables('gwTemplateParamTable')[parameters('createGw')]]"
+        "gwTemplateParam": "[variables('gwTemplateParamTable')[parameters('createGw')]]",
+        "vmTemplateUriTable": {
+            "yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/linuxVM.json",
+            "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
+        },
+        "vmName": "concat(parameters('vnetName'), 'vm')",
+        "vmTemplateUri": "[variables('vmTemplateUriTable')[parameters('createVm')]]",
+        "vmTemplateParamTable": {
+            "yes": {
+                "vmName": { "value": "[variables('vmName')]" },
+                "vnetName": { "value": "[parameters('vnetName')]" },
+                "subnetName": { "value": "[concat(parameters('subnetNamePrefix'), '1')]" },
+                "vnetName": { "value": "ubuntu" },
+                "adminUsername": { "value": "[parameters('adminUsername')]" },
+                "adminPassword": { "value": "[parameters('adminPassword')]" },
+
+                
+            },
+            "no": {
+            }
+        },
+        "vmTemplateParam": "[variables('vmTemplateParamTable')[parameters('createVm')]]"
     },
     "resources": [
         {
-            "comments": "Create Vnet",
+            "comments": "Create Vnet with three subnets and one gateway subnet",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('vnetName')]",
             "apiVersion": "[variables('apiVersion')]",
@@ -99,7 +133,7 @@
             "dependsOn": []
         },
         {
-            "comments": "Create public IP address for the VPN gateway",
+            "comments": "Create public IP address for the VPN gateway, actually only used if createGw is True",
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[parameters('gwPIPName')]",
@@ -123,6 +157,23 @@
             },
             "dependsOn": [
                 "[parameters('gwPIPName')]",
+                "[parameters('vnetName')]"                
+            ]
+        },
+		{
+			"comments": "Optionally create a VM in first subnet",
+			"name": "[variables('vmName')]",
+            "type": "Microsoft.Resources/deployments",
+			"apiVersion": "[variables('apiVersion')]",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('vmTemplateUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": "[variables('vmTemplateParam')]"
+            },
+            "dependsOn": [
                 "[parameters('vnetName')]"                
             ]
         }

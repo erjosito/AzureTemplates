@@ -27,27 +27,25 @@
             "type": "string",
             "allowedValues": ["yes", "no"]
         },
-        "subnetCount": {
-            "defaultValue": 2,
-            "type": "int",
-            "metadata": { "description": "Number of subnets in each vNet" }
+        "createVm": {
+            "defaultValue": "no",
+            "type": "string",
+            "allowedValues": ["yes", "no"]
         },
-        "subnet1VmCount": {
-            "defaultValue": 1,
-            "type": "int",
-            "metadata": { "description": "Number of VMs in the first subnet in the VM" }
-        },
-        "subnet2VmCount": {
-            "defaultValue": 1,
-            "type": "int",
-            "metadata": { "description": "Number of VMs in the second subnet in the VM" }
-        },
+        "vmType": {
+            "defaultValue": "ubuntu",
+            "type": "string",
+            "allowedValues": [
+                "ubuntu"
+            ],
+            "metadata": { "description": "Type of VM to optionally create in the first subnet in every vnet"}
+		},
         "adminUsername": {
             "defaultValue": "jose",
             "type": "string",
             "metadata": { "description": "Username for the VMs"}
 		},
-        "defaultPwd": {
+        "adminPassword": {
             "defaultValue": null,
             "type": "securestring",
             "metadata": { "description": "Password for the VMs"}
@@ -76,7 +74,7 @@
             "dependsOn": []
         },
 		{
-			"comments": "vnet with subnets",
+			"comments": "vnet with 3 subnets",
 			"name": "[concat(parameters('vnetNamePrefix'), '-template-', copyIndex(1))]",
             "type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
@@ -92,7 +90,11 @@
                     "subnetNamePrefix": { "value": "[concat(parameters('vnetNamePrefix'), copyIndex(1), 'Subnet')]"},
                     "gwName": { "value": "[concat(parameters('vnetNamePrefix'), copyIndex(1), 'GW')]" },
                     "gwPIPName": { "value": "[concat(parameters('vnetNamePrefix'), copyIndex(1), 'GWPIP')]" },
-                    "createGw": { "value": "[parameters('createGw')]"}
+                    "createGw": { "value": "[parameters('createGw')]"},
+                    "createVm": { "value": "[parameters('createVm')]"},
+                    "adminUser": { "value": "[parameters('adminUsername')]"},
+                    "adminPassword": { "value": "[parameters('adminPassword')]"}
+
                 }
             },
             "dependsOn": [
