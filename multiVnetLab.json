@@ -92,7 +92,7 @@
                     "gwPIPName": { "value": "[concat(parameters('vnetNamePrefix'), copyIndex(1), 'GWPIP')]" },
                     "createGw": { "value": "[parameters('createGw')]"},
                     "createVm": { "value": "[parameters('createVm')]"},
-                    "adminUser": { "value": "[parameters('adminUsername')]"},
+                    "adminUsername": { "value": "[parameters('adminUsername')]"},
                     "adminPassword": { "value": "[parameters('adminPassword')]"}
 
                 }

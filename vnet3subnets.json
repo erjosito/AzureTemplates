@@ -71,7 +71,7 @@
             "yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/linuxVM.json",
             "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
         },
-        "vmName": "concat(parameters('vnetName'), 'vm')",
+        "vmName": "[concat(parameters('vnetName'), 'vm')]",
         "vmTemplateUri": "[variables('vmTemplateUriTable')[parameters('createVm')]]",
         "vmTemplateParamTable": {
             "yes": {
