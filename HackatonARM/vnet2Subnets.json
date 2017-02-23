@@ -1,0 +1,65 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "defaultValue": "myVnet",
+            "type": "string"
+        },
+        "vnetSpace": {
+            "defaultValue": "10.0.0.0/16",
+            "type": "string"
+        },
+        "subnet1Name": {
+            "defaultValue": "FrontendNet",
+            "type": "string"
+        },
+        "subnet1Prefix": {
+            "defaultValue": "10.0.0.0/24",
+            "type": "string"
+        },
+        "subnet2Name": {
+            "defaultValue": "BackendNet",
+            "type": "string"
+        },
+        "subnet2Prefix": {
+            "defaultValue": "10.0.1.0/24",
+            "type": "string"
+        }
+    },
+    "variables": {
+        "apiVersion": "2016-03-30"
+    },
+    "resources": [
+        {
+            "comments": "Create Vnet with three subnets and one gateway subnet",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('vnetName')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('vnetSpace')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet1Prefix')]"
+                        }
+                    },
+                    {
+                        "name": "[parameters('subnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet2Prefix')]"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        }
+    ]
+}

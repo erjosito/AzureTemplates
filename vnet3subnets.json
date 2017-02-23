@@ -144,7 +144,7 @@
             "dependsOn": []
         },
 		{
-			"comments": "Optionally create a public IP address",
+			"comments": "Optionally create a public IP address, if createGw equals 'yes'",
 			"name": "[parameters('gwPIPName')]",
             "type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-09-01",
@@ -161,7 +161,7 @@
             ]
         },
 		{
-			"comments": "Optionally create VPN gateway",
+			"comments": "Optionally create VPN gateway, if createGw equals 'yes'",
 			"name": "[concat(parameters('vnetName'), 'VpnGw')]",
             "type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-09-01",
@@ -179,7 +179,7 @@
             ]
         },
 		{
-			"comments": "Optionally create a VM in first subnet",
+			"comments": "Optionally create a VM in first subnet, if createVm equals 'yes'",
 			"name": "[variables('vmName')]",
             "type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-09-01",

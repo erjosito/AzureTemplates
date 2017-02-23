@@ -1,0 +1,139 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "defaultValue": "myVnet",
+            "type": "string"
+        },
+        "subnetName": {
+            "defaultValue": "mySubnet",
+            "type": "string"
+        },
+        "storageAccountName": {
+            "defaultValue": "[concat('storage',uniqueString(resourceGroup().id))]",
+            "type": "string",
+            "metadata": { "description": "Name of the storage account used for the VMs. If not specified, a unique ID will be taken" }
+		},
+        "location": {
+            "defaultValue": "westeurope",
+            "type": "string",
+            "allowedValues": [ "westeurope", "northeurope" ]
+        },
+        "vmName": {
+            "defaultValue": "myVM",
+            "type": "string"
+        },
+        "dscExtensionUpdateTagVersion": {
+            "defaultValue": "",
+            "type": "string"
+        },
+        "artifactsLocation": {
+            "defaultValue": "",
+            "type": "string"
+        },
+        "dscExtensionArchiveFileName": {
+            "defaultValue": "",
+            "type": "string"
+        }
+    },
+    "variables": {
+        "nicName": "[concat(parameters('vmName'), 'nic')]",
+        "ipCfgName": "[concat(parameters('vmName'), 'ipcfg')]",
+        "pipName": "[concat(parameters('vmName'), 'pip')]"
+    },
+    "resources": [
+        {
+			"comments": "Storage account for VM disks",
+			"type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccountName')]",
+            "apiVersion": "2016-01-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "name": "Microsoft.Powershell.DSC",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "2.20",
+                "autoUpgradeMinorVersion": true,
+                "forceUpdateTag": "[parameters('dscExtensionUpdateTagVersion')]",
+                "settings": {
+                    "configuration": {
+                        "url": "[concat(parameters('artifactsLocation'), '/', parameters('dscExtensionArchiveFolder'), '/', parameters('dscExtensionArchiveFileName'))]",
+                        "script": "dscExtension.ps1",
+                        "function": "Main"
+                    },
+                    "configurationArguments": {
+                        "nodeName": "[parameters('vmName')]"
+                    }
+                },
+                "protectedSettings": {
+                    "configurationUrlSasToken": "[parameters('artifactsLocationSasToken')]"
+                }
+ 
+            }
+        },
+        {
+            "comments": "Public IP address",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('pipName')]",
+            "apiVersion": "2016-03-30",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+			"comments": "NIC created with dynamic IP addresses",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('nicName')]",
+            "apiVersion": "2016-03-30",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[variables('ipCfgName')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipName'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('subnetName'))]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false
+            },
+            "resources": [],
+            "dependsOn": [
+                "[variables('pipName')]"
+            ]
+        }
+ 
+
+    ]
+}
