@@ -116,7 +116,7 @@
             "name": "[concat(parameters('vmName'), '-', copyIndex(1))]",
             "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
-            "plan": "[variables('plan')['vmType']]",
+            "plan": "[variables('plan')[parameters('vmType')]]",
             "properties": {
 				"availabilitySet": {
 					"id": "[resourceId('Microsoft.Compute/availabilitySets', variables('avSetName'))]"
