@@ -1,0 +1,1482 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_csr5_1_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_myVnet1vm_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_myVnet2vm_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_myVnet3vm_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_myVnet4vm_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_myVnet5vm_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_csr5_1_name": {
+            "defaultValue": "csr5-1",
+            "type": "String"
+        },
+        "virtualMachines_myVnet1vm_name": {
+            "defaultValue": "myVnet1vm",
+            "type": "String"
+        },
+        "virtualMachines_myVnet2vm_name": {
+            "defaultValue": "myVnet2vm",
+            "type": "String"
+        },
+        "virtualMachines_myVnet3vm_name": {
+            "defaultValue": "myVnet3vm",
+            "type": "String"
+        },
+        "virtualMachines_myVnet4vm_name": {
+            "defaultValue": "myVnet4vm",
+            "type": "String"
+        },
+        "virtualMachines_myVnet5vm_name": {
+            "defaultValue": "myVnet5vm",
+            "type": "String"
+        },
+        "networkInterfaces_csr5_1_nic0_name": {
+            "defaultValue": "csr5-1-nic0",
+            "type": "String"
+        },
+        "networkInterfaces_csr5_1_nic1_name": {
+            "defaultValue": "csr5-1-nic1",
+            "type": "String"
+        },
+        "networkInterfaces_myVnet1vmnic_name": {
+            "defaultValue": "myVnet1vmnic",
+            "type": "String"
+        },
+        "networkInterfaces_myVnet2vmnic_name": {
+            "defaultValue": "myVnet2vmnic",
+            "type": "String"
+        },
+        "networkInterfaces_myVnet3vmnic_name": {
+            "defaultValue": "myVnet3vmnic",
+            "type": "String"
+        },
+        "networkInterfaces_myVnet4vmnic_name": {
+            "defaultValue": "myVnet4vmnic",
+            "type": "String"
+        },
+        "networkInterfaces_myVnet5vmnic_name": {
+            "defaultValue": "myVnet5vmnic",
+            "type": "String"
+        },
+        "publicIPAddresses_csr5pip_name": {
+            "defaultValue": "csr5pip",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet1GWPIP_name": {
+            "defaultValue": "myVnet1GWPIP",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet1vmpip_name": {
+            "defaultValue": "myVnet1vmpip",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet2GWPIP_name": {
+            "defaultValue": "myVnet2GWPIP",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet2vmpip_name": {
+            "defaultValue": "myVnet2vmpip",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet3GWPIP_name": {
+            "defaultValue": "myVnet3GWPIP",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet3vmpip_name": {
+            "defaultValue": "myVnet3vmpip",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet4GWPIP_name": {
+            "defaultValue": "myVnet4GWPIP",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet4vmpip_name": {
+            "defaultValue": "myVnet4vmpip",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet5GWPIP_name": {
+            "defaultValue": "myVnet5GWPIP",
+            "type": "String"
+        },
+        "publicIPAddresses_myVnet5vmpip_name": {
+            "defaultValue": "myVnet5vmpip",
+            "type": "String"
+        },
+        "routeTables_vnet1Subnet1_name": {
+            "defaultValue": "vnet1Subnet1",
+            "type": "String"
+        },
+        "routeTables_vnet1Subnet2_name": {
+            "defaultValue": "vnet1Subnet2",
+            "type": "String"
+        },
+        "routeTables_vnet2Subnet1_name": {
+            "defaultValue": "vnet2Subnet1",
+            "type": "String"
+        },
+        "routeTables_vnet2Subnet2_name": {
+            "defaultValue": "vnet2Subnet2",
+            "type": "String"
+        },
+        "routeTables_vnet3Subnet1_name": {
+            "defaultValue": "vnet3Subnet1",
+            "type": "String"
+        },
+        "routeTables_vnet3Subnet2_name": {
+            "defaultValue": "vnet3Subnet2",
+            "type": "String"
+        },
+        "routeTables_vnet4Subnet1_name": {
+            "defaultValue": "vnet4Subnet1",
+            "type": "String"
+        },
+        "routeTables_vnet4Subnet2_name": {
+            "defaultValue": "vnet4Subnet2",
+            "type": "String"
+        },
+        "routeTables_vnet5Subnet1_name": {
+            "defaultValue": "vnet5Subnet1",
+            "type": "String"
+        },
+        "routeTables_vnet5Subnet2_name": {
+            "defaultValue": "vnet5Subnet2",
+            "type": "String"
+        },
+        "virtualNetworks_myVnet1_name": {
+            "defaultValue": "myVnet1",
+            "type": "String"
+        },
+        "virtualNetworks_myVnet2_name": {
+            "defaultValue": "myVnet2",
+            "type": "String"
+        },
+        "virtualNetworks_myVnet3_name": {
+            "defaultValue": "myVnet3",
+            "type": "String"
+        },
+        "virtualNetworks_myVnet4_name": {
+            "defaultValue": "myVnet4",
+            "type": "String"
+        },
+        "virtualNetworks_myVnet5_name": {
+            "defaultValue": "myVnet5",
+            "type": "String"
+        },
+        "storageAccounts_storagegmp7j3d5v3qim_name": {
+            "defaultValue": "storagegmp7j3d5v3qim",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Compute/virtualMachines/csr5-1'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_csr5_1_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "westeurope",
+            "plan": {
+                "name": "csr-azure-byol",
+                "product": "cisco-csr-1000v",
+                "publisher": "cisco"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D3_v2"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "cisco",
+                        "offer": "cisco-csr-1000v",
+                        "sku": "csr-azure-byol",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "csr5-disk",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('http', '://', parameters('storageAccounts_storagegmp7j3d5v3qim_name'), '.blob.core.windows.net', '/vhds/csr5-disk.vhd')]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "csr5",
+                    "adminUsername": "jose",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_csr5_1_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_csr5_1_nic0_name'))]",
+                            "properties": {
+                                "primary": true
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_csr5_1_nic1_name'))]",
+                            "properties": {
+                                "primary": false
+                            }
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storagegmp7j3d5v3qim_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_csr5_1_nic0_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_csr5_1_nic1_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Compute/virtualMachines/myVnet1vm'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_myVnet1vm_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "westeurope",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_A0"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04.0-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[parameters('virtualMachines_myVnet1vm_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_storagegmp7j3d5v3qim_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_myVnet1vm_name'),'diskgmp7j3d5v3qim.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_myVnet1vm_name')]",
+                    "adminUsername": "jose",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_myVnet1vm_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet1vmnic_name'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storagegmp7j3d5v3qim_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet1vmnic_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Compute/virtualMachines/myVnet2vm'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_myVnet2vm_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "westeurope",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_A0"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04.0-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[parameters('virtualMachines_myVnet2vm_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_storagegmp7j3d5v3qim_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_myVnet2vm_name'),'diskgmp7j3d5v3qim.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_myVnet2vm_name')]",
+                    "adminUsername": "jose",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_myVnet2vm_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet2vmnic_name'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storagegmp7j3d5v3qim_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet2vmnic_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Compute/virtualMachines/myVnet3vm'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_myVnet3vm_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "westeurope",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_A0"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04.0-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[parameters('virtualMachines_myVnet3vm_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_storagegmp7j3d5v3qim_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_myVnet3vm_name'),'diskgmp7j3d5v3qim.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_myVnet3vm_name')]",
+                    "adminUsername": "jose",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_myVnet3vm_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet3vmnic_name'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storagegmp7j3d5v3qim_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet3vmnic_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Compute/virtualMachines/myVnet4vm'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_myVnet4vm_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "westeurope",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_A0"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04.0-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[parameters('virtualMachines_myVnet4vm_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_storagegmp7j3d5v3qim_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_myVnet4vm_name'),'diskgmp7j3d5v3qim.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_myVnet4vm_name')]",
+                    "adminUsername": "jose",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_myVnet4vm_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet4vmnic_name'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storagegmp7j3d5v3qim_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet4vmnic_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Compute/virtualMachines/myVnet5vm'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_myVnet5vm_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "westeurope",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_A0"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04.0-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[parameters('virtualMachines_myVnet5vm_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_storagegmp7j3d5v3qim_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_myVnet5vm_name'),'diskgmp7j3d5v3qim.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_myVnet5vm_name')]",
+                    "adminUsername": "jose",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_myVnet5vm_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet5vmnic_name'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storagegmp7j3d5v3qim_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_myVnet5vmnic_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/networkInterfaces/csr5-1-nic0'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_csr5_1_nic0_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('networkInterfaces_csr5_1_nic0_name'),'-ipConfig')]",
+                        "properties": {
+                            "privateIPAddress": "10.5.1.51",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_csr5pip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet5_name')), '/subnets/myVnet5Subnet1')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": true
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_csr5pip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet5_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/networkInterfaces/csr5-1-nic1'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_csr5_1_nic1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('networkInterfaces_csr5_1_nic1_name'),'-ipConfig')]",
+                        "properties": {
+                            "privateIPAddress": "10.5.2.51",
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet5_name')), '/subnets/myVnet5Subnet2')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": true
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet5_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/networkInterfaces/myVnet1vmnic'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_myVnet1vmnic_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('networkInterfaces_myVnet1vmnic_name'),'-ipConfig')]",
+                        "properties": {
+                            "privateIPAddress": "10.1.2.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet1vmpip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet1_name')), '/subnets/myVnet1Subnet2')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet1vmpip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet1_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/networkInterfaces/myVnet2vmnic'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_myVnet2vmnic_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('networkInterfaces_myVnet2vmnic_name'),'-ipConfig')]",
+                        "properties": {
+                            "privateIPAddress": "10.2.2.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet2vmpip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet2_name')), '/subnets/myVnet2Subnet2')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet2vmpip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet2_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/networkInterfaces/myVnet3vmnic'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_myVnet3vmnic_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('networkInterfaces_myVnet3vmnic_name'),'-ipConfig')]",
+                        "properties": {
+                            "privateIPAddress": "10.3.2.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet3vmpip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet3_name')), '/subnets/myVnet3Subnet2')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet3vmpip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet3_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/networkInterfaces/myVnet4vmnic'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_myVnet4vmnic_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('networkInterfaces_myVnet4vmnic_name'),'-ipConfig')]",
+                        "properties": {
+                            "privateIPAddress": "10.4.2.5",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet4vmpip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet4_name')), '/subnets/myVnet4Subnet2')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet4vmpip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet4_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/networkInterfaces/myVnet5vmnic'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_myVnet5vmnic_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('networkInterfaces_myVnet5vmnic_name'),'-ipConfig')]",
+                        "properties": {
+                            "privateIPAddress": "10.5.2.5",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet5vmpip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet5_name')), '/subnets/myVnet5Subnet2')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myVnet5vmpip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_myVnet5_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/csr5pip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_csr5pip_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet1GWPIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet1GWPIP_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet1vmpip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet1vmpip_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet2GWPIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet2GWPIP_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet2vmpip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet2vmpip_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet3GWPIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet3GWPIP_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet3vmpip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet3vmpip_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet4GWPIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet4GWPIP_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet4vmpip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet4vmpip_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet5GWPIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet5GWPIP_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/publicIPAddresses/myVnet5vmpip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_myVnet5vmpip_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet1Subnet1'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet1Subnet1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet2",
+                        "properties": {
+                            "addressPrefix": "10.1.2.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet1Subnet2'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet1Subnet2_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet1",
+                        "properties": {
+                            "addressPrefix": "10.1.1.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet2",
+                        "properties": {
+                            "addressPrefix": "10.2.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet3",
+                        "properties": {
+                            "addressPrefix": "10.3.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet5",
+                        "properties": {
+                            "addressPrefix": "10.5.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet2Subnet1'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet2Subnet1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet1",
+                        "properties": {
+                            "addressPrefix": "10.2.1.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet2Subnet2'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet2Subnet2_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet1",
+                        "properties": {
+                            "addressPrefix": "10.2.1.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet1",
+                        "properties": {
+                            "addressPrefix": "10.1.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet3",
+                        "properties": {
+                            "addressPrefix": "10.3.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet5",
+                        "properties": {
+                            "addressPrefix": "10.5.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet3Subnet1'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet3Subnet1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet2",
+                        "properties": {
+                            "addressPrefix": "10.3.2.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet3Subnet2'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet3Subnet2_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet1",
+                        "properties": {
+                            "addressPrefix": "10.3.1.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet1",
+                        "properties": {
+                            "addressPrefix": "10.1.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet2",
+                        "properties": {
+                            "addressPrefix": "10.2.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet5",
+                        "properties": {
+                            "addressPrefix": "10.5.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet4Subnet1'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet4Subnet1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet2",
+                        "properties": {
+                            "addressPrefix": "10.4.2.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.1.5"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet4Subnet2'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet4Subnet2_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet1",
+                        "properties": {
+                            "addressPrefix": "10.4.1.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    },
+                    {
+                        "name": "toVnet5",
+                        "properties": {
+                            "addressPrefix": "10.5.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.4.2.4"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet5Subnet1'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet5Subnet1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet2",
+                        "properties": {
+                            "addressPrefix": "10.5.2.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.5.1.51"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/routeTables/vnet5Subnet2'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_vnet5Subnet2_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "toSubnet1",
+                        "properties": {
+                            "addressPrefix": "10.5.1.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.5.2.51"
+                        }
+                    },
+                    {
+                        "name": "toVnet2",
+                        "properties": {
+                            "addressPrefix": "10.2.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.5.2.51"
+                        }
+                    },
+                    {
+                        "name": "toVnet3",
+                        "properties": {
+                            "addressPrefix": "10.3.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.5.2.51"
+                        }
+                    },
+                    {
+                        "name": "toVnet1",
+                        "properties": {
+                            "addressPrefix": "10.1.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.5.2.51"
+                        }
+                    },
+                    {
+                        "name": "toVnet4",
+                        "properties": {
+                            "addressPrefix": "10.4.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.5.2.51"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/virtualNetworks/myVnet1'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_myVnet1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.1.0.0/16"
+                    ]
+                },
+                "dhcpOptions": {
+                    "dnsServers": []
+                },
+                "subnets": [
+                    {
+                        "name": "GatewaySubnet",
+                        "properties": {
+                            "addressPrefix": "10.1.0.0/24"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet1_name'),'Subnet1')]",
+                        "properties": {
+                            "addressPrefix": "10.1.1.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet1Subnet1_name'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet1_name'),'Subnet2')]",
+                        "properties": {
+                            "addressPrefix": "10.1.2.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet1Subnet2_name'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet1_name'),'Subnet3')]",
+                        "properties": {
+                            "addressPrefix": "10.1.3.0/24"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet1Subnet1_name'))]",
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet1Subnet2_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/virtualNetworks/myVnet2'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_myVnet2_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.2.0.0/16"
+                    ]
+                },
+                "dhcpOptions": {
+                    "dnsServers": []
+                },
+                "subnets": [
+                    {
+                        "name": "GatewaySubnet",
+                        "properties": {
+                            "addressPrefix": "10.2.0.0/24"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet2_name'),'Subnet1')]",
+                        "properties": {
+                            "addressPrefix": "10.2.1.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet2Subnet1_name'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet2_name'),'Subnet2')]",
+                        "properties": {
+                            "addressPrefix": "10.2.2.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet2Subnet2_name'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet2_name'),'Subnet3')]",
+                        "properties": {
+                            "addressPrefix": "10.2.3.0/24"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet2Subnet1_name'))]",
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet2Subnet2_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/virtualNetworks/myVnet3'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_myVnet3_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.3.0.0/16"
+                    ]
+                },
+                "dhcpOptions": {
+                    "dnsServers": []
+                },
+                "subnets": [
+                    {
+                        "name": "GatewaySubnet",
+                        "properties": {
+                            "addressPrefix": "10.3.0.0/24"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet3_name'),'Subnet1')]",
+                        "properties": {
+                            "addressPrefix": "10.3.1.0/24"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet3_name'),'Subnet2')]",
+                        "properties": {
+                            "addressPrefix": "10.3.2.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet3Subnet2_name'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet3_name'),'Subnet3')]",
+                        "properties": {
+                            "addressPrefix": "10.3.3.0/24"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet3Subnet2_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/virtualNetworks/myVnet4'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_myVnet4_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.4.0.0/16"
+                    ]
+                },
+                "dhcpOptions": {
+                    "dnsServers": []
+                },
+                "subnets": [
+                    {
+                        "name": "GatewaySubnet",
+                        "properties": {
+                            "addressPrefix": "10.4.0.0/24"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet4_name'),'Subnet1')]",
+                        "properties": {
+                            "addressPrefix": "10.4.1.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet4Subnet1_name'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet4_name'),'Subnet2')]",
+                        "properties": {
+                            "addressPrefix": "10.4.2.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet4Subnet2_name'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet4_name'),'Subnet3')]",
+                        "properties": {
+                            "addressPrefix": "10.4.3.0/24"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet4Subnet1_name'))]",
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet4Subnet2_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitVnet/providers/Microsoft.Network/virtualNetworks/myVnet5'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_myVnet5_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westeurope",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.5.0.0/16"
+                    ]
+                },
+                "dhcpOptions": {
+                    "dnsServers": []
+                },
+                "subnets": [
+                    {
+                        "name": "GatewaySubnet",
+                        "properties": {
+                            "addressPrefix": "10.5.0.0/24"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet5_name'),'Subnet1')]",
+                        "properties": {
+                            "addressPrefix": "10.5.1.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet5Subnet1_name'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet5_name'),'Subnet2')]",
+                        "properties": {
+                            "addressPrefix": "10.5.2.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet5Subnet2_name'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('virtualNetworks_myVnet5_name'),'Subnet3')]",
+                        "properties": {
+                            "addressPrefix": "10.5.3.0/24"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet5Subnet1_name'))]",
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_vnet5Subnet2_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/e7da9914-9b05-4891-893c-546cb7b0422e/resourceGroups/transitvnet/providers/Microsoft.Storage/storageAccounts/storagegmp7j3d5v3qim'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_storagegmp7j3d5v3qim_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "westeurope",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        }
+    ]
+}

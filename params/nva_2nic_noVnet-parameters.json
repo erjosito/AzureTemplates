@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+            "vnetName": { "value": "myVnet5" },
+            "storageAccountName": { "value": "storagegmp7j3d5v3qim" },
+            "vmType": { "value": "csr" },
+            "subnet0Name": { "value": "myVnet5subnet1" },
+            "subnet1Name": { "value": "myVnet5subnet2" },
+            "pipName": { "value": "csr5pip" },
+            "vmName": { "value": "csr5" },
+            "vmUsr": { "value": "jose" },
+            "ip0": { "value": "10.5.1.5" },
+            "ip1": { "value": "10.5.2.5" },
+            "vmPwd": {
+                "reference": {
+                    "keyVault": {
+                        "id": "/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/PermanentLab/providers/Microsoft.KeyVault/vaults/erjosito"
+                    },
+                    "secretName": "defaultPwd"
+                }
+            }
+    }
+}

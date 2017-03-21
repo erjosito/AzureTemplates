@@ -28,7 +28,11 @@
         "vnaType": {
             "defaultValue": "asav",
             "type": "string",
-            "metadata": { "description": "Can be either 'asa' or 'csr'" }
+            "metadata": { "description": "Can be either 'asa' or 'csr'" },
+            "allowedValues": [
+                "asa",
+                "csr"
+            ]
         },
         "vnaCount": {
             "defaultValue": 1,
