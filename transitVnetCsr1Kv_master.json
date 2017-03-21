@@ -59,9 +59,9 @@
             "asa": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nva_2nic_noVnet.json",
             "ubuntu": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nvaLinux_2nic_noVnet.json"
         },
-        "nvaType": "[variables('csr1Params')['vmType']]",
+        "nvaType": "[variables('csr1Params')['vmType']['value']]",
         "NVATemplateUriYesNo": {
-            "yes": "[variables('NVATemplateUri')[variables('nvaType')]['value']",
+            "yes": "[variables('NVATemplateUri')[variables('nvaType')]]",
             "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
         }
     },
