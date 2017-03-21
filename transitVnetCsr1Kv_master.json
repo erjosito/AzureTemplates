@@ -54,33 +54,14 @@
             "yes": "[variables('csr1Params')]",
             "no": {}
         },
-        "csr2Params": {
-            "vnetName": { "value": "myVnet5" },
-            "storageAccountName": { "value": "[parameters('storageAccountName')]" },
-            "vmType": { "value": "csr" },
-            "subnet0Name": { "value": "myVnet5subnet2" },
-            "subnet1Name": { "value": "myVnet5subnet3" },
-            "pipName": { "value": "csr5pip" },
-            "vmName": { "value": "csr5" },
-            "vmUsr": { "value": "jose" },
-            "ip0": { "value": "10.5.2.10" },
-            "ip1": { "value": "10.5.3.10" },
-            "vmPwd": {
-                "reference": {
-                    "keyVault": {
-                        "id": "/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/PermanentLab/providers/Microsoft.KeyVault/vaults/erjosito"
-                    },
-                    "secretName": "defaultPwd"
-                }
-            }
+        "NVATemplateUri": {
+            "csr": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nva_2nic_noVnet.json",
+            "asa": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nva_2nic_noVnet.json",
+            "ubuntu": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nvaLinux_2nic_noVnet.json"
         },
-        "csr2ParamsYesNo": {
-            "yes": "[variables('csr2Params')]",
-            "no": {}
-        },
-        "NVATemplateUri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nva_2nic_noVnet.json",
+        "nvaType": "[variables('csr1Params')['vmType']]",
         "NVATemplateUriYesNo": {
-            "yes": "[variables('NVATemplateUri')]",
+            "yes": "[variables('NVATemplateUri')[variables('nvaType')]]",
             "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
         }
     },

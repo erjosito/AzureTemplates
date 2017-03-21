@@ -83,7 +83,7 @@
 			"location": "[resourceGroup().location]"
 		},
         {
-            "comments": "Deploy Virtual Network Appliance",
+            "comments": "Deploy Linux VM as Virtual Network Appliance",
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[concat(parameters('vmName'), '-', copyIndex(1))]",
             "apiVersion": "2015-06-15",
