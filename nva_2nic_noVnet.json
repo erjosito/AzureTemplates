@@ -69,36 +69,38 @@
                 "product": "cisco-asav",
                 "publisher": "cisco",
                 "sku": "asav-azure-byol",
-                "vmSize": "Standard_D3_v2",
-                "plan": {
-                    "name": "[variables('settings')['planName']]",
-                    "product": "[variables('settings')['product']]",
-                    "publisher": "[variables('settings')['publisher']]"
-                }
+                "vmSize": "Standard_D3_v2"
             },
             "csr": {
                 "planName": "csr-azure-byol",
                 "product": "cisco-csr-1000v",
                 "publisher": "cisco",
                 "sku": "csr-azure-byol",
-                "vmSize": "Standard_D3_v2",
-                "plan": {
-                    "name": "[variables('settings')['planName']]",
-                    "product": "[variables('settings')['product']]",
-                    "publisher": "[variables('settings')['publisher']]"
-                }
+                "vmSize": "Standard_D3_v2"
             },
             "ubuntu": {
                 "planName": "",
                 "product": "UbuntuServer",
                 "publisher": "Canonical",
                 "sku": "16.04.0-LTS",
-                "vmSize": "Standard_D2_v2",
-                "plan": {}
+                "vmSize": "Standard_D2_v2"
             }
         },
         "settings": "[variables('settingsTable')[parameters('vmType')]]",
-        "avSetName": "[concat(parameters('vmName'),'AvSet')]"
+        "avSetName": "[concat(parameters('vmName'),'AvSet')]",
+        "plan": {
+            "asa": {
+                "name": "[variables('settings')['planName']]",
+                "product": "[variables('settings')['product']]",
+                "publisher": "[variables('settings')['publisher']]"
+            },
+            "csr": {
+                "name": "[variables('settings')['planName']]",
+                "product": "[variables('settings')['product']]",
+                "publisher": "[variables('settings')['publisher']]"
+            },
+            "ubuntu": {}
+        }
     },
     "resources": [
 		{
@@ -114,7 +116,7 @@
             "name": "[concat(parameters('vmName'), '-', copyIndex(1))]",
             "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
-            "plan": "[variables('settings')['plan']]",
+            "plan": "[variables('plan')['vmType']]",
             "properties": {
 				"availabilitySet": {
 					"id": "[resourceId('Microsoft.Compute/availabilitySets', variables('avSetName'))]"
