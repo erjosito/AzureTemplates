@@ -61,7 +61,7 @@
         },
         "nvaType": "[variables('csr1Params')['vmType']]",
         "NVATemplateUriYesNo": {
-            "yes": "[variables('NVATemplateUri')[variables('nvaType')]]",
+            "yes": "[variables('NVATemplateUri')[variables('nvaType')]['value']",
             "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
         }
     },
