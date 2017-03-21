@@ -8,7 +8,7 @@
             "metadata": { "description": "Name of the storage account used for the VMs. If not specified, a unique ID will be taken" }
 		},
         "createNVA": {
-            "defaultValue": "yes",
+            "defaultValue": "no",
             "type": "string",
             "metadata": { "description": "Whether NVAs should be deployed at all or not" }
         }
@@ -17,7 +17,7 @@
         "multiVnetParams": {
             "vnetCount": { "value": 5 },
             "createGw": { "value": "no" },
-            "createVm": { "value": "yes" },            
+            "createVm": { "value": "no" },            
             "vmType": { "value": "ubuntu" },            
             "adminUsername": { "value": "jose" },            
             "adminPassword": {
@@ -39,8 +39,8 @@
             "pipName": { "value": "csr4pip" },
             "vmName": { "value": "csrVnet4" },
             "vmUsr": { "value": "jose" },
-            "ip0": { "value": "10.4.2.4" },
-            "ip1": { "value": "10.4.3.4" },
+            "ip0": { "value": "10.4.2.10" },
+            "ip1": { "value": "10.4.3.10" },
             "vmPwd": {
                 "reference": {
                     "keyVault": {
@@ -63,8 +63,8 @@
             "pipName": { "value": "csr5pip" },
             "vmName": { "value": "csr5" },
             "vmUsr": { "value": "jose" },
-            "ip0": { "value": "10.5.2.5" },
-            "ip1": { "value": "10.5.3.5" },
+            "ip0": { "value": "10.5.2.10" },
+            "ip1": { "value": "10.5.3.10" },
             "vmPwd": {
                 "reference": {
                     "keyVault": {
