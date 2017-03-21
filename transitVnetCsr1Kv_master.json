@@ -8,7 +8,7 @@
             "metadata": { "description": "Name of the storage account used for the VMs. If not specified, a unique ID will be taken" }
 		},
         "createNVA": {
-            "defaultValue": "no",
+            "defaultValue": "yes",
             "type": "string",
             "metadata": { "description": "Whether NVAs should be deployed at all or not" }
         }
@@ -33,7 +33,7 @@
         "csr1Params": {
             "vnetName": { "value": "myVnet4" },
             "storageAccountName": { "value": "[parameters('storageAccountName')]" },
-            "vmType": { "value": "csr" },
+            "vmType": { "value": "ubuntu" },
             "subnet0Name": { "value": "myVnet4subnet2" },
             "subnet1Name": { "value": "myVnet4subnet3" },
             "pipName": { "value": "csr4pip" },
