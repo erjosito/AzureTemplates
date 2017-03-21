@@ -69,7 +69,7 @@
     },
     "resources": [
 		{
-			"comments": "Create the vnets, with VMs in subnet 1",
+			"comments": "Create vnets, with VMs in subnet 1",
             "name": "vnets",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
