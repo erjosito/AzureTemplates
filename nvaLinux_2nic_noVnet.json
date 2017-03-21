@@ -15,16 +15,16 @@
             "type": "string"
         },
         "vmType": {
-            "defaultValue": "csr",
+            "defaultValue": "ubuntu",
             "type": "string",
-            "allowedValues": ["csr", "ubuntu"]
+            "allowedValues": ["ubuntu"]
         },
         "vmCount": {
             "defaultValue": 1,
             "type": "int"
         },
         "vmName": {
-            "defaultValue": "myCsr",
+            "defaultValue": "myNva",
             "type": "string"
         },
         "vmUsr": {
@@ -36,7 +36,7 @@
             "type": "securestring"
         },
         "pipName": {
-            "defaultValue": "csr-publicIP",
+            "defaultValue": "nva-publicIP",
             "type": "string"
         },
         "subnet0Name": {
@@ -64,22 +64,7 @@
             "nic1": "[concat(parameters('ip1'), '1')]"
         },
         "settingsTable": {
-            "asa": {
-                "planName": "asav-azure-byol",
-                "product": "cisco-asav",
-                "publisher": "cisco",
-                "sku": "asav-azure-byol",
-                "vmSize": "Standard_D3_v2"
-            },
-            "csr": {
-                "planName": "csr-azure-byol",
-                "product": "cisco-csr-1000v",
-                "publisher": "cisco",
-                "sku": "csr-azure-byol",
-                "vmSize": "Standard_D3_v2"
-            },
             "ubuntu": {
-                "planName": "Ubuntu Server 16.04 LTS",
                 "product": "UbuntuServer",
                 "publisher": "Canonical",
                 "sku": "16.04.0-LTS",
@@ -103,11 +88,6 @@
             "name": "[concat(parameters('vmName'), '-', copyIndex(1))]",
             "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
-            "plan": {
-                "name": "[variables('settings')['planName']]",
-                "product": "[variables('settings')['product']]",
-                "publisher": "[variables('settings')['publisher']]"
-            },
             "properties": {
 				"availabilitySet": {
 					"id": "[resourceId('Microsoft.Compute/availabilitySets', variables('avSetName'))]"
