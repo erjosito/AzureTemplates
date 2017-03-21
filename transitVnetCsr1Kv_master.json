@@ -6,7 +6,12 @@
             "defaultValue": "[concat('storage',uniqueString(resourceGroup().id))]",
             "type": "string",
             "metadata": { "description": "Name of the storage account used for the VMs. If not specified, a unique ID will be taken" }
-		}
+		},
+        "createNVA": {
+            "defaultValue": "yes",
+            "type": "string",
+            "metadata": { "description": "Whether NVAs should be deployed at all or not" }
+        }
     },
     "variables": {
         "multiVnetParams": {
@@ -28,14 +33,14 @@
         "csr1Params": {
             "vnetName": { "value": "myVnet4" },
             "storageAccountName": { "value": "[parameters('storageAccountName')]" },
-            "vmType": { "value": "csrVnet4" },
-            "subnet0Name": { "value": "myVnet4subnet1" },
-            "subnet1Name": { "value": "myVnet4subnet2" },
-            "pipName": { "value": "csr5pip" },
-            "vmName": { "value": "csr5" },
+            "vmType": { "value": "csr" },
+            "subnet0Name": { "value": "myVnet4subnet2" },
+            "subnet1Name": { "value": "myVnet4subnet3" },
+            "pipName": { "value": "csr4pip" },
+            "vmName": { "value": "csrVnet4" },
             "vmUsr": { "value": "jose" },
-            "ip0": { "value": "10.5.1.4" },
-            "ip1": { "value": "10.5.2.4" },
+            "ip0": { "value": "10.4.2.4" },
+            "ip1": { "value": "10.4.3.4" },
             "vmPwd": {
                 "reference": {
                     "keyVault": {
@@ -44,18 +49,22 @@
                     "secretName": "defaultPwd"
                 }
             }
+        },
+        "csr1ParamsYesNo": {
+            "yes": "[variables('csr1Params')]",
+            "no": {}
         },
         "csr2Params": {
             "vnetName": { "value": "myVnet5" },
             "storageAccountName": { "value": "[parameters('storageAccountName')]" },
             "vmType": { "value": "csr" },
-            "subnet0Name": { "value": "myVnet5subnet1" },
-            "subnet1Name": { "value": "myVnet5subnet2" },
+            "subnet0Name": { "value": "myVnet5subnet2" },
+            "subnet1Name": { "value": "myVnet5subnet3" },
             "pipName": { "value": "csr5pip" },
             "vmName": { "value": "csr5" },
             "vmUsr": { "value": "jose" },
-            "ip0": { "value": "10.5.1.5" },
-            "ip1": { "value": "10.5.2.5" },
+            "ip0": { "value": "10.5.2.5" },
+            "ip1": { "value": "10.5.3.5" },
             "vmPwd": {
                 "reference": {
                     "keyVault": {
@@ -65,11 +74,19 @@
                 }
             }
         },
+        "csr2ParamsYesNo": {
+            "yes": "[variables('csr2Params')]",
+            "no": {}
+        },
         "NVATemplateUri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nva_2nic_noVnet.json",
+        "NVATemplateUriYesNo": {
+            "yes": "[variables('NVATemplateUri')]",
+            "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
+        }
     },
     "resources": [
 		{
-			"comments": "Create vnets, with VMs in subnet 1",
+			"comments": "Create vnets, each with a gateway subnet, 3 standard subnets, and a Linux VM in subnet 1",
             "name": "vnets",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
@@ -83,17 +100,77 @@
 			}
 		},
 		{
-			"comments": "Create appliance in vnet4, subnets 1 and 2",
+			"comments": "Create NVA in vnet4, subnets 1 and 2, if createNVA=yes",
             "name": "csr1",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('NVATemplateUri')]",
+					"uri": "[variables('NVATemplateUriYesNo')[parameters('createNVA')]]",
 					"contentVersion": "1.0.0.0"
 				},
-				"parameters":  "[variables('csr1Params')]"
+				"parameters":  "[variables('csr1ParamsYesNo')[parameters('createNVA')]]"
+			},
+            "dependsOn": [
+                "vnets"
+            ]
+		},
+		{
+			"comments": "create vnet peering between hub (vnet4) and vnet1",
+            "name": "hub2spoke1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/vnetPeeringHubNSpoke.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+                    "hubVnetName": { "value": "myVnet4" },    
+                    "spokeVnetName": { "value": "myVnet1" }    
+                }
+			},
+            "dependsOn": [
+                "vnets"
+            ]
+		},
+		{
+			"comments": "create vnet peering between hub (vnet4) and vnet2",
+            "name": "hub2spoke2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/vnetPeeringHubNSpoke.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+                    "hubVnetName": { "value": "myVnet4" },    
+                    "spokeVnetName": { "value": "myVnet2" }    
+                }
+			},
+            "dependsOn": [
+                "vnets"
+            ]
+		},
+		{
+			"comments": "create vnet peering between hub (vnet4) and vnet3",
+            "name": "hub2spoke3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/vnetPeeringHubNSpoke.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+                    "hubVnetName": { "value": "myVnet4" },    
+                    "spokeVnetName": { "value": "myVnet3" }    
+                }
 			},
             "dependsOn": [
                 "vnets"
