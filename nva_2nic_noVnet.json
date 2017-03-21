@@ -24,7 +24,7 @@
             "type": "int"
         },
         "vmName": {
-            "defaultValue": "csr-01",
+            "defaultValue": "myCsr",
             "type": "string"
         },
         "vmUsr": {
@@ -79,9 +79,17 @@
                 "vmSize": "Standard_D3_v2"
             }
         },
-        "settings": "[variables('settingsTable')[parameters('vmType')]]"
+        "settings": "[variables('settingsTable')[parameters('vmType')]]",
+        "avSetName": "[concat(parameters('vmName'),'AvSet')]"
     },
     "resources": [
+		{
+			"comments": "Availability set for eventual NVA HA",
+			"type": "Microsoft.Compute/availabilitySets",
+			"name": "[variables('avSetName')]",
+			"apiVersion": "2016-03-30",
+			"location": "[resourceGroup().location]"
+		},
         {
             "comments": "Deploy Virtual Network Appliance",
             "type": "Microsoft.Compute/virtualMachines",
@@ -94,6 +102,9 @@
                 "publisher": "[variables('settings')['publisher']]"
             },
             "properties": {
+				"availabilitySet": {
+					"id": "[resourceId('Microsoft.Compute/availabilitySets', variables('avSetName'))]"
+				},
                 "hardwareProfile": {
                     "vmSize": "[variables('settings')['vmSize']]"
                 },
