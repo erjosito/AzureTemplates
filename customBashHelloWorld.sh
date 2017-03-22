@@ -1,1 +1,1 @@
-touch ~/helloworld.txt
+touch /home/helloworld.txt

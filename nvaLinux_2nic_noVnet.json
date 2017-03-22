@@ -113,17 +113,17 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "[concat(parameters('vmName'),'-disk')]",
+                        "name": "[concat(parameters('vmName'), '-', copyIndex(1),'-disk')]",
                         "createOption": "FromImage",
                         "vhd": {
-                            "uri": "[concat('http', '://', parameters('storageAccountName'), '.blob.core.windows.net', concat('/vhds/', parameters('vmName'),'-disk.vhd'))]"
+                            "uri": "[concat('http', '://', parameters('storageAccountName'), '.blob.core.windows.net', concat('/vhds/', parameters('vmName'), '-', copyIndex(1),'-disk.vhd'))]"
                         },
                         "caching": "ReadWrite"
                     },
                     "dataDisks": []
                 },
                 "osProfile": {
-                    "computerName": "[parameters('vmName')]",
+                    "computerName": "[concat(parameters('vmName'), '-', copyIndex(1))]",
                     "adminUsername": "[parameters('vmUsr')]",
                     "linuxConfiguration": {
                         "disablePasswordAuthentication": false
