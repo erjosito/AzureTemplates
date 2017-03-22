@@ -39,20 +39,26 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "ipConfigurations": [
-                {
-                    "properties": {
-                    "privateIPAllocationMethod": "Dynamic",
-                    "subnet": {
-                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', 'GatewaySubnet')]"
-                    },
-                    "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('PIPName'))]"
+                    {
+                        "properties": {
+                            "sku": {
+                                "capacity": 2,
+                                "name": "Standard",
+                                "tier": "Standard"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', 'GatewaySubnet')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('PIPName'))]"
+                            }
+                        },
+                        "name": "[concat(parameters('vnetName'), 'vnetGwConfig')]"
                     }
-                    },
-                    "name": "[concat(parameters('vnetName'), 'vnetGwConfig')]"
-                }
                 ],
                 "gatewayType": "Vpn",
+                "gatewaySize": "Default",
                 "vpnType": "RouteBased",
                 "enableBgp": "[variables('string2bool')[parameters('enableBgp')]]"
             }

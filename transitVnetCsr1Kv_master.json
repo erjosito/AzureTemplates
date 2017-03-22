@@ -16,7 +16,7 @@
     "variables": {
         "multiVnetParams": {
             "vnetCount": { "value": 5 },
-            "createGw": { "value": "yes" },
+            "createGw": { "value": "no" },
             "enableBgp": { "value": "true" },
             "createVm": { "value": "yes" },            
             "vmType": { "value": "ubuntu" },            
@@ -34,8 +34,8 @@
         "csr1Params": {
             "vmType": { "value": "ubuntu" },
             "vmCount": { "value": 2 },
-            "vmName": { "value": "NVA" },
-            "vnetName": { "value": "NVA" },
+            "vmName": { "value": "nva" },
+            "vnetName": { "value": "myVnet4" },
             "storageAccountName": { "value": "[parameters('storageAccountName')]" },
             "subnet0Name": { "value": "myVnet4subnet2" },
             "subnet1Name": { "value": "myVnet4subnet3" },
@@ -43,6 +43,7 @@
             "vmUsr": { "value": "jose" },
             "ip0": { "value": "10.4.2.10" },
             "ip1": { "value": "10.4.3.10" },
+            "deployLBYesNo": { "value": "yes" },
             "vmPwd": {
                 "reference": {
                     "keyVault": {
@@ -58,6 +59,7 @@
             "yes": "[variables('csr1Params')]",
             "no": {}
         },
+        "vpnGwTemplateUri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/vpnGw.json",
         "NVATemplateUri": {
             "csr": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nva_2nic_noVnet.json",
             "asa": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nva_2nic_noVnet.json",
@@ -185,6 +187,70 @@
                 "name": "udrTables",
                 "count": 3
             }
+		},
+        {
+            "comments": "Create public IP address for Vnet Gateway in Vnet4",
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "Vnet4gwPip",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic"
+            }
+        },
+        {
+            "comments": "Create public IP address for Vnet Gateway in Vnet5",
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "Vnet5gwPip",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic"
+            }
+        },
+		{
+			"comments": "Create vnet gateway in Vnet4",
+            "name": "vnet4Gw",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('vpnGwTemplateUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+                    "vnetName": { "value": "myVnet4" },
+                    "gwName": { "value": "vnet4gw" },
+                    "enableBgp": { "value": "true" },
+                    "PIPName": { "value": "Vnet4gwPip" }
+                }
+			},
+            "dependsOn": [
+                "Vnet4gwPip"
+            ]
+		},
+		{
+			"comments": "Create vnet gateway in Vnet4",
+            "name": "vnet4Gw",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('vpnGwTemplateUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+                    "vnetName": { "value": "myVnet5" },
+                    "gwName": { "value": "vnet5gw" },
+                    "enableBgp": { "value": "true" },
+                    "PIPName": { "value": "Vnet5gwPip" }
+                }
+			},
+            "dependsOn": [
+                "Vnet5gwPip"
+            ]
 		}
     ]
 }
