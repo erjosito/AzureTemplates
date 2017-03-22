@@ -54,11 +54,7 @@
                 ],
                 "gatewayType": "Vpn",
                 "vpnType": "RouteBased",
-                "enableBgp": "[variables('string2bool')[parameters('enableBgp')]]",
-                "dependsOn": [
-                    "[concat('Microsoft.Network/publicIPAddresses/', parameters('PIPName'))]",
-                    "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
-                ]
+                "enableBgp": "[variables('string2bool')[parameters('enableBgp')]]"
             }
         }
     ]
