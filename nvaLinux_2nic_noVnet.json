@@ -70,7 +70,7 @@
 		"deployLBYesNo": {
 			"defaultValue": "no",
 			"type": "string"
-		},
+		}
     },
     "variables": {
         "defaultGw": {
@@ -227,7 +227,7 @@
                     "ipAddress": { "value": "[concat(parameters('ip0'), copyIndex(1))]" },                    
                     "vnetName": { "value": "[parameters('vnetName')]" },
                     "subnetName": { "value": "[parameters('subnet0Name')]"},
-                    "pipName": { "value": "[parameters('pipName')]" }
+                    "pipName": { "value": "[concat(parameters('pipName'), '-', copyIndex(1))]" }
                 }
             },
             "dependsOn": [  

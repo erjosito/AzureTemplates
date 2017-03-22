@@ -23,7 +23,7 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "allowVirtualNetworkAccess": true,
-                "allowForwardedTraffic": false,
+                "allowForwardedTraffic": true,
                 "allowGatewayTransit": false,
                 "useRemoteGateways": false,
                     "remoteVirtualNetwork": {
@@ -38,8 +38,8 @@
          "location": "[resourceGroup().location]",
          "properties": {
             "allowVirtualNetworkAccess": true,
-            "allowForwardedTraffic": true,
-            "allowGatewayTransit": false,
+            "allowForwardedTraffic": false,
+            "allowGatewayTransit": true,
             "useRemoteGateways": false,
                 "remoteVirtualNetwork": {
                 "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"       
