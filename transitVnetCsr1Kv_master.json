@@ -48,7 +48,9 @@
                     },
                     "secretName": "defaultPwd"
                 }
-            }
+            },
+            "scriptUri": { "value": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/customBashHelloWorld.sh" },
+            "scriptCmd": { "value": "sh customBashHelloWorld.sh" }
         },
         "csr1ParamsYesNo": {
             "yes": "[variables('csr1Params')]",
@@ -63,7 +65,8 @@
         "NVATemplateUriYesNo": {
             "yes": "[variables('NVATemplateUri')[variables('nvaType')]]",
             "no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
-        }
+        },
+        "udrTemplateUri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/UDR_3subnets.json"
     },
     "resources": [
 		{
@@ -156,6 +159,26 @@
             "dependsOn": [
                 "vnets"
             ]
-		}
+		},
+		{
+			"comments": "Create custom routing table for vnet1 (but does not associate it to the subnets)",
+            "name": "udr-vnet1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-06-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('udrTemplateUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+                    "vnetPrefix": { "value": "10.1" },
+                    "udrName": { "value": "vnet1" },
+                    "nextHop": { "value": "10.4.2.101" }
+                }
+			},
+            "dependsOn": [
+            ]
+		},
     ]
 }

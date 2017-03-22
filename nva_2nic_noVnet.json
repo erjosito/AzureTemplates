@@ -56,6 +56,16 @@
             "defaultValue": "10.0.1.10",
             "type": "string",
             "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
+        },
+        "scriptUri": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": { "description": "Not used, included for parameter-compatibility with nvaLinux_2nic_noVnet.json" }            
+        },
+        "scriptCmd": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": { "description": "Not used, included for parameter-compatibility with nvaLinux_2nic_noVnet.json" }            
         }
     },
     "variables": {

@@ -56,6 +56,16 @@
             "defaultValue": "10.0.1.10",
             "type": "string",
             "metadata": { "description": "This string will be completed with the copyIndex: .101, .102, etc" }
+        },
+        "scriptUri": {
+            "defaultValue": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/customBashHelloWorld.sh",
+            "type": "string",
+            "metadata": { "description": "Script that will be executed" }            
+        },
+        "scriptCmd": {
+            "defaultValue": "sh customBashHelloWorld.sh",
+            "type": "string",
+            "metadata": { "description": "Command to run the script" }            
         }
     },
     "variables": {
@@ -195,6 +205,31 @@
             ],
             "copy": {
                 "name": "[concat(parameters('vmName'), '-nic1')]",
+                "count": "[parameters('vmCount')]"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('vmName'), '-', copyIndex(1), '/installcustomscript')]",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                "fileUris": [
+                    "[parameters('scriptUri')]"
+                ],
+                "commandToExecute": "[parameters('scriptCmd')]"
+                }
+            },
+            "dependsOn": [
+                "[parameters('vmName')]"
+            ],
+            "copy": {
+                "name": "[concat(parameters('vmName'), '-script')]",
                 "count": "[parameters('vmCount')]"
             }
         }
