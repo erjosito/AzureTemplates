@@ -232,8 +232,8 @@
             ]
 		},
 		{
-			"comments": "Create vnet gateway in Vnet4",
-            "name": "vnet4Gw",
+			"comments": "Create vnet gateway in Vnet5",
+            "name": "vnet5Gw",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
