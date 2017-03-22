@@ -32,7 +32,6 @@
         }
 	},
     "variables": {
-		"vip": "[concat(parameters('ipPrefix'), '.', parameters('vipSuffix'))]",
 		"frontendConfigName": "myFrontendConfig",
 		"probeName": "myProbe",
 		"slbConfigName": "mySLBConfig"
@@ -52,7 +51,7 @@
             "dependsOn": []
         },
         {
-            "comments": "Internal Load Balancer",
+            "comments": "External Load Balancer",
             "type": "Microsoft.Network/loadBalancers",
             "name": "[parameters('slbName')]",
             "apiVersion": "2016-03-30",
@@ -115,6 +114,6 @@
             "dependsOn": [
                 "[parameters('pipName')]"
             ]
-        },
+        }
     ]
 }
