@@ -227,7 +227,8 @@
                 }
 			},
             "dependsOn": [
-                "Vnet4gwPip"
+                "Vnet4gwPip",
+                "vnets"
             ]
 		},
 		{
@@ -249,7 +250,8 @@
                 }
 			},
             "dependsOn": [
-                "Vnet5gwPip"
+                "Vnet5gwPip",
+                "vnets"
             ]
 		}
     ]
