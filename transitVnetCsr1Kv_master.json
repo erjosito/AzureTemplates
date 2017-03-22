@@ -161,8 +161,8 @@
             ]
 		},
 		{
-			"comments": "Create custom routing table for vnet1 (but does not associate it to the subnets)",
-            "name": "udr-vnet1",
+			"comments": "Create custom routing tables for spoke vnets (but does not associate it to the subnets)",
+            "name": "[concat('udr-vnet', copyIndex(1))]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
@@ -172,13 +172,17 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-                    "vnetPrefix": { "value": "10.1" },
-                    "udrName": { "value": "vnet1" },
+                    "vnetPrefix": { "value": "[concat('10.', copyIndex(1))]" },
+                    "udrName": { "value": "[concat('vnet', copyIndex(1))]" },
                     "nextHop": { "value": "10.4.2.101" }
                 }
 			},
             "dependsOn": [
-            ]
+            ],
+            "copy": {
+                "name": "udrTables",
+                "count": 3
+            }
 		}
     ]
 }
