@@ -21,9 +21,9 @@
     "variables": {
         "subnetPrefix": {
             "0": "[concat(parameters('vnetPrefix'), '.0.0/24')]",
-            "1": "[concat(parameters('vnetPrefix'), '.0.0/24')]",
-            "2": "[concat(parameters('vnetPrefix'), '.0.0/24')]",
-            "3": "[concat(parameters('vnetPrefix'), '.0.0/24')]"
+            "1": "[concat(parameters('vnetPrefix'), '.1.0/24')]",
+            "2": "[concat(parameters('vnetPrefix'), '.2.0/24')]",
+            "3": "[concat(parameters('vnetPrefix'), '.3.0/24')]"
         }
     },
     "resources": [
