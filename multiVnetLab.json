@@ -27,6 +27,11 @@
             "type": "string",
             "allowedValues": ["yes", "no"]
         },
+        "enableBgp": {
+            "defaultValue": "false",
+            "type": "string",
+            "allowedValues": ["true", "false"]
+        },
         "createVm": {
             "defaultValue": "no",
             "type": "string",
@@ -91,10 +96,10 @@
                     "gwName": { "value": "[concat(parameters('vnetNamePrefix'), copyIndex(1), 'GW')]" },
                     "gwPIPName": { "value": "[concat(parameters('vnetNamePrefix'), copyIndex(1), 'GWPIP')]" },
                     "createGw": { "value": "[parameters('createGw')]"},
+                    "enableBgp": { "value": "[parameters('enableBgp')]"},
                     "createVm": { "value": "[parameters('createVm')]"},
                     "adminUsername": { "value": "[parameters('adminUsername')]"},
                     "adminPassword": { "value": "[parameters('adminPassword')]"}
-
                 }
             },
             "dependsOn": [

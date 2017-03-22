@@ -16,8 +16,9 @@
     "variables": {
         "multiVnetParams": {
             "vnetCount": { "value": 5 },
-            "createGw": { "value": "no" },
-            "createVm": { "value": "no" },            
+            "createGw": { "value": "yes" },
+            "enableBgp": { "value": "true" },
+            "createVm": { "value": "yes" },            
             "vmType": { "value": "ubuntu" },            
             "adminUsername": { "value": "jose" },            
             "adminPassword": {
@@ -34,6 +35,7 @@
             "vnetName": { "value": "myVnet4" },
             "storageAccountName": { "value": "[parameters('storageAccountName')]" },
             "vmType": { "value": "ubuntu" },
+            "vmCount": { "value": 2 },
             "subnet0Name": { "value": "myVnet4subnet2" },
             "subnet1Name": { "value": "myVnet4subnet3" },
             "pipName": { "value": "csr4pip" },

@@ -24,12 +24,16 @@
         }
     },
     "variables": {
-        "apiVersion": "2016-03-30"
+        "apiVersion": "2016-03-30",
+        "string2bool": {
+            "true": true,
+            "false": false
+        }
     },
     "resources": [
         {
             "comments": "Create VPN gateway",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2016-09-01",
             "type": "Microsoft.Network/virtualNetworkGateways",
             "name": "[parameters('gwName')]",
             "location": "[resourceGroup().location]",
@@ -50,7 +54,7 @@
                 ],
                 "gatewayType": "Vpn",
                 "vpnType": "RouteBased",
-                "enableBgp": false,
+                "enableBgp": "[variables('string2bool')[parameters('enableBgp')]]",
                 "dependsOn": [
                     "[concat('Microsoft.Network/publicIPAddresses/', parameters('PIPName'))]",
                     "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"

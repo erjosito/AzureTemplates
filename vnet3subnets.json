@@ -61,7 +61,8 @@
             "yes": {
                 "vnetName": { "value": "[parameters('vnetName')]" },
                 "gwName": { "value": "[parameters('gwName')]" },
-                "PIPName": { "value": "[parameters('gwPIPName')]" }
+                "PIPName": { "value": "[parameters('gwPIPName')]" },
+                "enableBgp": { "value": "[parameters('enableBgp')]" }                
             },
             "no": {
             }
