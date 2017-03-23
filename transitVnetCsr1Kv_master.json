@@ -2,10 +2,15 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "storageAccountName": {
-            "defaultValue": "[concat('storage',uniqueString(resourceGroup().id))]",
+        "adminUsername": {
+            "defaultValue": null,
             "type": "string",
-            "metadata": { "description": "Name of the storage account used for the VMs. If not specified, a unique ID will be taken" }
+            "metadata": { "description": "Default username for VMs and NVAs" }
+		},
+        "adminPassword": {
+            "defaultValue": null,
+            "type": "securestring",
+            "metadata": { "description": "Default password for VMs and NVAs" }
 		},
         "createNVA": {
             "defaultValue": "yes",
@@ -14,21 +19,16 @@
         }
     },
     "variables": {
+        "storageAccountName": "[concat('storage',uniqueString(resourceGroup().id))]",
         "multiVnetParams": {
+            "astorageAccountName": { "value": "[variables('storageAccountName')]" },            
             "vnetCount": { "value": 5 },
             "createGw": { "value": "no" },
             "enableBgp": { "value": "true" },
             "createVm": { "value": "yes" },            
             "vmType": { "value": "ubuntu" },            
-            "adminUsername": { "value": "jose" },            
-            "adminPassword": {
-                "reference": {
-                    "keyVault": {
-                        "id": "/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/PermanentLab/providers/Microsoft.KeyVault/vaults/erjosito"
-                    },
-                    "secretName": "defaultPwd"
-                }
-            }
+            "adminUsername": { "value": "[parameters('adminUsername')]" },            
+            "adminPassword": { "value": "[parameters('adminPassword')]" }
         },
         "multiVnetTemplateUri": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/multiVnetLab.json",
         "csr1Params": {
@@ -36,7 +36,7 @@
             "vmCount": { "value": 2 },
             "vmName": { "value": "nva" },
             "vnetName": { "value": "myVnet4" },
-            "storageAccountName": { "value": "[parameters('storageAccountName')]" },
+            "storageAccountName": { "value": "[variables('storageAccountName')]" },
             "subnet0Name": { "value": "myVnet4subnet2" },
             "subnet1Name": { "value": "myVnet4subnet3" },
             "pipName": { "value": "nvaPip" },
