@@ -25,7 +25,8 @@
         "createGw": {
             "defaultValue": "no",
             "type": "string",
-            "allowedValues": ["yes", "no"]
+            "allowedValues": ["yes", "no"],
+            "metadata": { "description": "Basic Vnet VPN Gateways will be created for all 5 Vnets. This has an impact if configuring peerings, since for some options gateways are required"}
         },
         "enableBgp": {
             "defaultValue": "false",

@@ -121,7 +121,7 @@
                 }
 			},
             "dependsOn": [
-                "vnets"
+                "vnets", "vnet4Gw"
             ]
 		},
 		{
@@ -141,7 +141,7 @@
                 }
 			},
             "dependsOn": [
-                "vnets"
+                "vnets", "vnet4Gw"
             ]
 		},
 		{
@@ -161,11 +161,11 @@
                 }
 			},
             "dependsOn": [
-                "vnets"
+                "vnets", "vnet4Gw"
             ]
 		},
 		{
-			"comments": "Create custom routing tables for spoke vnets (but does not associate it to the subnets)",
+			"comments": "Create custom routing tables for spoke vnets (but it does not associate it to the subnets)",
             "name": "[concat('udr-vnet', copyIndex(1))]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
@@ -192,7 +192,7 @@
             "comments": "Create public IP address for Vnet Gateway in Vnet4",
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "Vnet4gwPip",
+            "name": "vnet4gwPip",
             "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "Dynamic"
@@ -202,11 +202,57 @@
             "comments": "Create public IP address for Vnet Gateway in Vnet5",
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "Vnet5gwPip",
+            "name": "vnet5gwPip",
             "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "Dynamic"
             }
+        },
+		{
+			"comments": "Create VPN gateway in vnet4. I havent found how to create a standard SKU, it needs to be manually resized afterwards. The BGP ASN number must be changed so that it is different than the ASN of the GW in vnet5",
+			"name": "vnet4Gw",
+            "type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-09-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('vpnGwTemplateUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+                    "vnetName": { "value": "myVnet4" },
+                    "gwName": { "value": "vnet4gw" },
+                    "enableBgp": { "value": true },
+                    "PIPName": { "value": "vnet4gwPip" }
+                }
+            },
+            "dependsOn": [
+                "vnet4gwPip",
+                "vnets"                
+            ]
+        },
+		{
+			"comments": "Create VPN gateway in vnet5. I havent found how to create a standard SKU, it needs to be manually resized afterwards. The BGP ASN number must be changed so that it is different than the ASN of the GW in vnet4",
+			"name": "vnet5Gw",
+            "type": "Microsoft.Resources/deployments",
+			"apiVersion": "2016-09-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('vpnGwTemplateUri')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+                    "vnetName": { "value": "myVnet5" },
+                    "gwName": { "value": "vnet5gw" },
+                    "enableBgp": { "value": true },
+                    "PIPName": { "value": "vnet5gwPip" }
+                }
+            },
+            "dependsOn": [
+                "vnet5gwPip",
+                "vnets"                
+            ]
         }
     ]
 }
