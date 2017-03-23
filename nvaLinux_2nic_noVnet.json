@@ -87,10 +87,12 @@
         },
         "settings": "[variables('settingsTable')[parameters('vmType')]]",
         "avSetName": "[concat(parameters('vmName'),'AvSet')]",
-        "slbType": "external",
+        "slbType": "internal",
         "slbName": "[concat(parameters('vmName'), '-slb')]",
         "slbBackendName": "[concat(parameters('vmName'), '-slbBackend')]",
         "slbPipName": "[concat(parameters('vmName'), '-slbPip')]",
+        "ipPrefix": "10.4.10",
+        "vipSuffix": "100",
         "slbSubnet": "[parameters('subnet1Name')]",
 		"deployLBTemplate": {
 			"yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/slb.json",
@@ -116,6 +118,12 @@
                 },
                 "pipName": {
                     "value": "[variables('slbPipName')]"
+                },
+                "ipPrefix": {
+                    "value": "[variables('ipPrefix')]"
+                },
+                "vipSuffix": {
+                    "value": "[variables('vipSuffix')]"
                 }
             },
             "no": {

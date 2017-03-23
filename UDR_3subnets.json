@@ -150,9 +150,9 @@
                         }
                     },
                     {
-                        "name": "Default-Route-To-NVA",
+                        "name": "Route for other vnets",
                         "properties": {
-                            "addressPrefix": "0.0.0.0/0",
+                            "addressPrefix": "10.0.0.0/8",
                             "nextHopType": "VirtualAppliance",
                             "nextHopIpAddress": "[parameters('nextHop')]"
                         }

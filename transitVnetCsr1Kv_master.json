@@ -178,7 +178,7 @@
 				"parameters": {
                     "vnetPrefix": { "value": "[concat('10.', copyIndex(1))]" },
                     "udrName": { "value": "[concat('vnet', copyIndex(1))]" },
-                    "nextHop": { "value": "10.4.2.101" }
+                    "nextHop": { "value": "10.4.2.100" }
                 }
 			},
             "dependsOn": [

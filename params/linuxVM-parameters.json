@@ -1,0 +1,20 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+            "vmType": { "value": "ubuntu"},
+            "vmName": { "value": "myVnet1vm2"},
+            "vnetName": { "value": "myVnet1"},
+            "subnetName": { "value": "myVnet1Subnet1"},
+            "storageAccountName": { "value": "storagevs5yh554ku772"},
+            "adminUsername": { "value": "jose"},
+            "adminPassword": {
+                "reference": {
+                    "keyVault": {
+                        "id": "/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/PermanentLab/providers/Microsoft.KeyVault/vaults/erjosito"
+                    },
+                    "secretName": "defaultPwd"
+                }
+            }
+    }
+}
