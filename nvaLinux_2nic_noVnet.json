@@ -91,9 +91,9 @@
         "slbName": "[concat(parameters('vmName'), '-slb')]",
         "slbBackendName": "[concat(parameters('vmName'), '-slbBackend')]",
         "slbPipName": "[concat(parameters('vmName'), '-slbPip')]",
-        "ipPrefix": "10.4.10",
+        "ipPrefix": "10.4.2",
         "vipSuffix": "100",
-        "slbSubnet": "[parameters('subnet1Name')]",
+        "slbSubnet": "[parameters('subnet0Name')]",
 		"deployLBTemplate": {
 			"yes": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/slb.json",
 			"no": "https://raw.githubusercontent.com/erjosito/AzureTemplates/master/nothing.json"
