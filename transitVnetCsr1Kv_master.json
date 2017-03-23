@@ -19,9 +19,9 @@
         }
     },
     "variables": {
-        "storageAccountName": "[concat('storage',uniqueString(resourceGroup().id))]",
+        "storageAccountName": "[concat('storage', uniqueString(resourceGroup().id))]",
         "multiVnetParams": {
-            "astorageAccountName": { "value": "[variables('storageAccountName')]" },            
+            "storageAccountName": { "value": "[variables('storageAccountName')]" },            
             "vnetCount": { "value": 5 },
             "createGw": { "value": "no" },
             "enableBgp": { "value": "true" },
