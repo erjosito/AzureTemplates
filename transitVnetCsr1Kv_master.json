@@ -166,7 +166,7 @@
 		},
 		{
 			"comments": "Create custom routing tables for spoke vnets (but it does not associate it to the subnets)",
-            "name": "[concat('udr-vnet', copyIndex(1))]",
+            "name": "[concat('vnet', copyIndex(1),'-udr')]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2016-06-01",
 			"properties": {
