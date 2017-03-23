@@ -41,11 +41,6 @@
                 "ipConfigurations": [
                     {
                         "properties": {
-                            "sku": {
-                                "capacity": 2,
-                                "name": "Standard",
-                                "tier": "Standard"
-                            },
                             "privateIPAllocationMethod": "Dynamic",
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', 'GatewaySubnet')]"

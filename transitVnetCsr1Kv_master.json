@@ -222,7 +222,7 @@
 				"parameters": {
                     "vnetName": { "value": "myVnet4" },
                     "gwName": { "value": "vnet4gw" },
-                    "enableBgp": { "value": true },
+                    "enableBgp": { "value": "true" },
                     "PIPName": { "value": "vnet4gwPip" }
                 }
             },
@@ -245,7 +245,7 @@
 				"parameters": {
                     "vnetName": { "value": "myVnet5" },
                     "gwName": { "value": "vnet5gw" },
-                    "enableBgp": { "value": true },
+                    "enableBgp": { "value": "true" },
                     "PIPName": { "value": "vnet5gwPip" }
                 }
             },
